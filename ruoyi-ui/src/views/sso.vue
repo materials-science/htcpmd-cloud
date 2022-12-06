@@ -6,7 +6,7 @@
       :rules="loginRules"
       class="login-form"
     >
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">HTCPMD SSO</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -79,7 +79,15 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2022 ruoyi.vip All Rights Reserved.</span>
+      <p class="page-login--content-footer-copyright">
+        <b>Copyright</b> © 2020 <b>Shenzhen University</b>
+        <a href="https://github.com/PorYoung"> @<b>PorYoung</b> </a>
+      </p>
+      <p class="page-login--content-footer-options">
+        <a href="#">Help</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </p>
     </div>
   </div>
 </template>
@@ -88,6 +96,7 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
+import { getToken, getExpiresIn } from "@/utils/auth";
 
 export default {
   name: "Login",
@@ -116,17 +125,22 @@ export default {
       // 注册开关
       register: false,
       redirect: undefined,
+      client: "",
+      redirect_url: "",
     };
   },
-  watch: {
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
-      },
-      immediate: true,
-    },
-  },
   created() {
+    const { client, redirect_url } = this.$route.query;
+    if (!client || !redirect_url) {
+      this.$router.replace("/");
+    }
+    this.client = client;
+    this.redirect_url = redirect_url;
+
+    if (getToken()) {
+      return this.redirectPage();
+    }
+
     this.getCode();
     this.getCookie();
   },
@@ -172,9 +186,10 @@ export default {
           this.$store
             .dispatch("Login", this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || "/" }).catch(() => {});
+              this.redirectPage();
             })
-            .catch(() => {
+            .catch((e) => {
+              console.error(e);
               this.loading = false;
               if (this.captchaEnabled) {
                 this.getCode();
@@ -183,19 +198,12 @@ export default {
         }
       });
     },
-  },
-  beforeCreate() {
-    let { client, redirect_url } = this.$route.query;
-    if (!client && !redirect_url) {
-      client = process.env.VUE_APP_CLIENT_NAME;
-      redirect_url = process.env.VUE_APP_CALLBACK_URL;
-    }
-    client = client ? client : process.env.VUE_APP_CLIENT_NAME;
-    redirect_url = redirect_url ? redirect_url : "/";
-
-    this.$router.replace(
-      `/sso?client=${encodeURI(client)}&redirect_url=${encodeURI(redirect_url)}`
-    );
+    redirectPage() {
+      let _t = `token=${encodeURI(getToken())}&expire=${getExpiresIn()}`;
+      window.location.href = this.redirect_url.includes("?")
+        ? `${this.redirect_url}&${_t}`
+        : `${this.redirect_url}?${_t}`;
+    },
   },
 };
 </script>
@@ -206,13 +214,42 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
-  background-size: cover;
+
+  background: linear-gradient(
+    to top,
+    rgb(72, 198, 239, 0.1) 0%,
+    rgb(111, 134, 214, 0.1) 100%
+  );
+
+  &::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-image: url("../assets/images/icon-only@light.png");
+    opacity: 0.1;
+    filter: blur(30px);
+  }
 }
 .title {
   margin: 0px auto 30px auto;
   text-align: center;
   color: #707070;
+  position: relative;
+  &::after {
+    content: " ";
+    display: block;
+    background-image: url("../assets/images/icon-only@light.png");
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    background-size: cover;
+    right: -15px;
+    top: -25px;
+  }
 }
 
 .login-form {
@@ -230,6 +267,9 @@ export default {
     height: 39px;
     width: 14px;
     margin-left: 2px;
+  }
+  &--logo {
+    height: 120px;
   }
 }
 .login-tip {
@@ -250,13 +290,37 @@ export default {
   height: 40px;
   line-height: 40px;
   position: fixed;
-  bottom: 0;
+  bottom: 1em;
   width: 100%;
   text-align: center;
   color: #fff;
   font-family: Arial;
   font-size: 12px;
   letter-spacing: 1px;
+
+  .page-login--content-footer-copyright {
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    color: #03a9f4;
+    a {
+      color: peru;
+    }
+  }
+  .page-login--content-footer-options {
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    a {
+      color: peru;
+      margin: 0 1em;
+    }
+  }
 }
 .login-code-img {
   height: 38px;
