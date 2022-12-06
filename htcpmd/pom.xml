@@ -8,6 +8,7 @@
     <modules>
         <module>htcpmd-common</module>
         <module>htcpmd-demo</module>
+        <module>htcpmd-system</module>
     </modules>
 
     <parent>
@@ -27,6 +28,7 @@
         <htcpmd.common.version>0.0.1-SNAPSHOT</htcpmd.common.version>
         <hutool.version>5.8.9</hutool.version>
         <lombok.version>1.18.24</lombok.version>
+        <knife4j.version>3.0.3</knife4j.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +49,13 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- Swagger UI -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-ui</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -9,7 +9,7 @@ import cn.poryoung.htcpmd.common.exception.SystemException;
 import cn.poryoung.htcpmd.common.pojo.CommonResp;
 import cn.poryoung.htcpmd.common.util.CommonAssembler;
 import cn.poryoung.htcpmd.demo.application.dto.demoRespDto;
-import cn.poryoung.htcpmd.demo.application.service.demoAppService;
+import cn.poryoung.htcpmd.demo.application.service.DemoAppService;
 import cn.poryoung.htcpmd.demo.domain.service.DemoDomainService;
 import cn.poryoung.htcpmd.demo.infrastructure.proxy.HtcpmdAiidaProxyService;
 import com.ruoyi.common.core.domain.R;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "DemoApplication", description = "示例接口")
 @RestController
 @RequestMapping("/")
-public class demoAppServiceImpl implements demoAppService {
+public class demoAppServiceImpl implements DemoAppService {
 
     @Autowired
     private DemoDomainService demoDomainService;
