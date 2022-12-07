@@ -1,0 +1,63 @@
+<template>
+	<d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
+		<template slot="header">测试: 查看用户列表</template>
+		<d2-crud-x ref="d2Crud" v-bind="_crudProps" v-on="_crudListeners">
+			<div slot="header">
+				<crud-search
+					ref="search"
+					:options="crud.searchOptions"
+					@submit="handleSearch"
+				/>
+
+				<el-button
+					slot="header"
+					v-permission="'usersphere:user:add'"
+					size="small"
+					type="primary"
+                    plain
+					@click="addRow"
+					><i class="el-icon-plus" /> 新增</el-button
+				>
+				<crud-toolbar
+					:search.sync="crud.searchOptions.show"
+					:compact.sync="crud.pageOptions.compact"
+					:columns="crud.columns"
+					@refresh="doRefresh()"
+					@columns-filter-changed="handleColumnsFilterChanged"
+				/>
+			</div>
+		</d2-crud-x>
+	</d2-container>
+</template>
+
+<script>
+	import * as api from "./api";
+	import { crudOptions } from "./crud";
+	import { d2CrudPlus } from "d2-crud-plus";
+	export default {
+		name: "formSelect",
+		mixins: [d2CrudPlus.crud],
+		data() {
+			return {};
+		},
+		methods: {
+			getCrudOptions() {
+				return crudOptions(this);
+			},
+			pageRequest(query) {
+				return api.GetList(query);
+			},
+			addRequest(row) {
+				console.log("api", api);
+				return api.AddObj(row);
+			},
+			updateRequest(row) {
+				console.log("----", row);
+				return api.UpdateObj(row);
+			},
+			delRequest(row) {
+				return api.DelObj(row.id);
+			},
+		},
+	};
+</script>

@@ -1,0 +1,14 @@
+.data-table-expand {
+	&--wrap {
+		@extend %card;
+		display: flex;
+		flex-wrap: wrap;
+		> .el-form-item {
+			padding: 0 8px;
+			width: 33%;
+		}
+	}
+	.el-input.is-disabled .el-input__inner {
+		cursor: text;
+	}
+}

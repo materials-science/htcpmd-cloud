@@ -1,0 +1,98 @@
+@import "~@/assets/style/unit/color.scss";
+
+// 工具类名统一前缀
+$prefix: d2;
+
+// 禁止用户选中 鼠标变为手形
+%unable-select {
+	user-select: none;
+	cursor: pointer;
+}
+
+/**
+ *定义滚动条样式 圆角和阴影不需要则传入null
+ *	1、$outColor -- 滚动条颜色
+ *	2、$innerColor -- 滑块颜色
+ *	3、$height -- 滚动条宽高、圆角
+ *	4、$width
+ *	5、$radius
+ *	6、$shadow -- 阴影
+*/
+@mixin scrollBar(
+	$width: 4px,
+	$height: 4px,
+	$outColor: rgba(255, 255, 255, 0.1),
+	$innerColor: rgba(0, 0, 0, 0.1),
+	$radius: 10px,
+	$shadow: inset 0 0 6px rgba(0, 0, 0, 0.3)
+) {
+	/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+	&::-webkit-scrollbar {
+		width: $width;
+		height: $height;
+		background-color: $outColor;
+	}
+
+	/*定义滚动条轨道 内阴影+圆角*/
+	&::-webkit-scrollbar-track {
+		@if ($shadow!=null) {
+			-webkit-box-shadow: $shadow;
+		}
+		@if ($radius!=null) {
+			border-radius: $radius;
+		}
+		background-color: $outColor;
+		opacity: 0;
+	}
+
+	/*定义滑块 内阴影+圆角*/
+	&::-webkit-scrollbar-thumb {
+		@if ($shadow!=null) {
+			-webkit-box-shadow: $shadow;
+		}
+		@if ($radius!=null) {
+			border-radius: $radius;
+		}
+		background-color: $innerColor;
+		border: 1px solid $innerColor;
+	}
+}
+html,
+body {
+	@include scrollBar(
+		$width: 0,
+		$outColor: rgba(0, 0, 0, 0.1),
+		$innerColor: rgba(0, 0, 0, 0.1),
+		$shadow: inset 0 0 6px rgba(0, 0, 0, 0.3)
+	);
+}
+// 填满父元素
+// 组要父元素 position: relative | absolute;
+%full {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	@include scrollBar($width: 6px);
+}
+
+// flex 垂直水平居中
+%flex-row {
+	display: flex;
+	flex-direction: row;
+}
+%flex-col {
+	display: flex;
+	flex-direction: column;
+}
+
+// 将元素模拟成卡片外观
+%card {
+	border: 1px solid #dddee1;
+	border-color: #e9eaec;
+	background: #fff;
+	border-radius: 4px;
+	font-size: 14px;
+	position: relative;
+}
