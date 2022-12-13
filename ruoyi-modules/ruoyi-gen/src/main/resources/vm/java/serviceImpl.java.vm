@@ -1,4 +1,4 @@
-package ${packageName}.service.impl;
+package ${packageName}.domain.service.impl;
 
 import java.util.List;
 #foreach ($column in $columns)
@@ -13,23 +13,23 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import com.ruoyi.common.core.utils.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
-import ${packageName}.domain.${subClassName};
+import ${packageName}.domain.entity.${subClassName};
 #end
-import ${packageName}.mapper.${ClassName}Mapper;
-import ${packageName}.domain.${ClassName};
-import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.domain.repository.${ClassName}Repository;
+import ${packageName}.domain.entity.${ClassName};
+import ${packageName}.domain.service.${ClassName}DomainService;
 
 /**
- * ${functionName}Service业务层处理
+ * ${functionName} 领域Service业务层实现
  * 
  * @author ${author}
  * @date ${datetime}
  */
 @Service
-public class ${ClassName}ServiceImpl implements I${ClassName}Service 
+public class ${ClassName}DomainServiceImpl implements ${ClassName}DomainService
 {
     @Autowired
-    private ${ClassName}Mapper ${className}Mapper;
+    private ${ClassName}Repository ${className}Repository;
 
     /**
      * 查询${functionName}
@@ -40,7 +40,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Override
     public ${ClassName} select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField})
     {
-        return ${className}Mapper.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
+        return ${className}Repository.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
     }
 
     /**
@@ -52,7 +52,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Override
     public List<${ClassName}> select${ClassName}List(${ClassName} ${className})
     {
-        return ${className}Mapper.select${ClassName}List(${className});
+        return ${className}Repository.select${ClassName}List(${className});
     }
 
     /**
@@ -73,11 +73,11 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 #end
 #end
 #if($table.sub)
-        int rows = ${className}Mapper.insert${ClassName}(${className});
+        int rows = ${className}Repository.insert${ClassName}(${className});
         insert${subClassName}(${className});
         return rows;
 #else
-        return ${className}Mapper.insert${ClassName}(${className});
+        return ${className}Repository.insert${ClassName}(${className});
 #end
     }
 
@@ -99,10 +99,10 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 #end
 #end
 #if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
+        ${className}Repository.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
         insert${subClassName}(${className});
 #end
-        return ${className}Mapper.update${ClassName}(${className});
+        return ${className}Repository.update${ClassName}(${className});
     }
 
     /**
@@ -118,9 +118,9 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     public int delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaType}[] ${pkColumn.javaField}s)
     {
 #if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}s(${pkColumn.javaField}s);
+        ${className}Repository.delete${subClassName}By${subTableFkClassName}s(${pkColumn.javaField}s);
 #end
-        return ${className}Mapper.delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaField}s);
+        return ${className}Repository.delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaField}s);
     }
 
     /**
@@ -136,9 +136,9 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     public int delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField})
     {
 #if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${pkColumn.javaField});
+        ${className}Repository.delete${subClassName}By${subTableFkClassName}(${pkColumn.javaField});
 #end
-        return ${className}Mapper.delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
+        return ${className}Repository.delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
     }
 #if($table.sub)
 
@@ -161,7 +161,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
             }
             if (list.size() > 0)
             {
-                ${className}Mapper.batch${subClassName}(list);
+                ${className}Repository.batch${subClassName}(list);
             }
         }
     }
