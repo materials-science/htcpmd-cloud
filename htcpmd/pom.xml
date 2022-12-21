@@ -8,7 +8,7 @@
     <modules>
         <module>htcpmd-common</module>
         <module>htcpmd-demo</module>
-        <module>htcpmd-system</module>
+        <module>htcpmd-center</module>
     </modules>
 
     <parent>
@@ -29,6 +29,10 @@
         <hutool.version>5.8.9</hutool.version>
         <lombok.version>1.18.24</lombok.version>
         <knife4j.version>3.0.3</knife4j.version>
+        <amqp.version>2.7.3</amqp.version>
+        <mybatis-generator.version>1.4.1</mybatis-generator.version>
+        <spring-file-storage.version>0.7.0</spring-file-storage.version>
+        <spring-data.version>2.7.0</spring-data.version>
     </properties>
 
     <dependencyManagement>
@@ -57,7 +61,67 @@
                 <artifactId>knife4j-spring-ui</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
+
+            <!--消息队列相关依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${amqp.version}</version>
+            </dependency>
+
+            <!-- spring-file-storage 必须要引入 -->
+            <dependency>
+                <groupId>cn.xuyanwu</groupId>
+                <artifactId>spring-file-storage</artifactId>
+                <version>${spring-file-storage.version}</version>
+            </dependency>
+
+            <!---mongodb相关依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${spring-data.version}</version>
+            </dependency>
+
+            <!--Elasticsearch相关依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>${spring-data.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>ali central</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

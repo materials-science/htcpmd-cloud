@@ -15,9 +15,9 @@ public class CommonExceptionHandler {
 
     private static final Log log = LogFactory.get();
 
-    @ExceptionHandler(BussinessException.class)
+    @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public CommonResp businessException(BussinessException e) {
+    public CommonResp businessException(BusinessException e) {
         log.error("Thrown business exception, errCode is: {}, errMsg is: {}. LogMsg: {}", e.getCode(), e.getMsg(), e.getLogMsg());
         return BeanUtil.copyProperties(e, CommonResp.class);
     }

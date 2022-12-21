@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.poryoung.htcpmd.center.infrastructure.persistence.mapper.HtcpmdBizJobMapper">
+
+    <resultMap type="HtcpmdBizJob" id="HtcpmdBizJobResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="type" column="type"/>
+        <result property="rid" column="rid"/>
+        <result property="rname" column="rname"/>
+        <result property="status" column="status"/>
+        <result property="statusMsg" column="status_msg"/>
+        <result property="logs" column="logs"/>
+        <result property="attributes" column="attributes"/>
+        <result property="groupId" column="group_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delSts" column="del_sts"/>
+        <result property="verNo" column="ver_no"/>
+    </resultMap>
+
+    <sql id="selectHtcpmdBizJobVo">
+        select id,
+               name,
+               description,
+               type,
+               rid,
+               rname,
+               status,
+               status_msg,
+               logs,
+               attributes,
+               group_id,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_sts,
+               ver_no
+        from htcpmd_biz_job
+    </sql>
+
+    <select id="selectHtcpmdBizJobList" parameterType="HtcpmdBizJob" resultMap="HtcpmdBizJobResult">
+        <include refid="selectHtcpmdBizJobVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''">and type = #{type}</if>
+            <if test="rid != null  and rid != ''">and rid = #{rid}</if>
+            <if test="rname != null  and rname != ''">and rname like concat('%', #{rname}, '%')</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="groupId != null ">and group_id = #{groupId}</if>
+        </where>
+    </select>
+
+    <select id="selectHtcpmdBizJobById" parameterType="String" resultMap="HtcpmdBizJobResult">
+        <include refid="selectHtcpmdBizJobVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertHtcpmdBizJob" parameterType="HtcpmdBizJob" useGeneratedKeys="true" keyProperty="id">
+        insert into htcpmd_biz_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="type != null">type,</if>
+            <if test="rid != null">rid,</if>
+            <if test="rname != null">rname,</if>
+            <if test="status != null">status,</if>
+            <if test="statusMsg != null">status_msg,</if>
+            <if test="logs != null">logs,</if>
+            <if test="attributes != null">attributes,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delSts != null">del_sts,</if>
+            <if test="verNo != null">ver_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="type != null">#{type},</if>
+            <if test="rid != null">#{rid},</if>
+            <if test="rname != null">#{rname},</if>
+            <if test="status != null">#{status},</if>
+            <if test="statusMsg != null">#{statusMsg},</if>
+            <if test="logs != null">#{logs},</if>
+            <if test="attributes != null">#{attributes},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delSts != null">#{delSts},</if>
+            <if test="verNo != null">#{verNo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHtcpmdBizJob" parameterType="HtcpmdBizJob">
+        update htcpmd_biz_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="rid != null">rid = #{rid},</if>
+            <if test="rname != null">rname = #{rname},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="statusMsg != null">status_msg = #{statusMsg},</if>
+            <if test="logs != null">logs = #{logs},</if>
+            <if test="attributes != null">attributes = #{attributes},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delSts != null">del_sts = #{delSts},</if>
+            ver_no = #{verNo} + 1,
+        </trim>
+        <where>
+            and id = #{id}
+            <if test="verNo != null and verNo != ''">and ver_no = #{verNo}</if>
+        </where>
+    </update>
+
+    <delete id="deleteHtcpmdBizJobById" parameterType="String">
+        delete
+        from htcpmd_biz_job
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteHtcpmdBizJobByIds" parameterType="String">
+        delete from htcpmd_biz_job where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

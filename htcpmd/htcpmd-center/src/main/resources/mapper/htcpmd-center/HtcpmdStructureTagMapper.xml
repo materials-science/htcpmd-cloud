@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.poryoung.htcpmd.center.infrastructure.persistence.mapper.HtcpmdStructureTagMapper">
+    
+    <resultMap type="HtcpmdStructureTag" id="HtcpmdStructureTagResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delSts"    column="del_sts"    />
+        <result property="verNo"    column="ver_no"    />
+    </resultMap>
+
+    <sql id="selectHtcpmdStructureTagVo">
+        select id, name, description, group_id, create_by, create_time, update_by, update_time, del_sts, ver_no from htcpmd_structure_tag
+    </sql>
+
+    <select id="selectHtcpmdStructureTagList" parameterType="HtcpmdStructureTag" resultMap="HtcpmdStructureTagResult">
+        <include refid="selectHtcpmdStructureTagVo"/>
+        <where>  
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+        </where>
+    </select>
+    
+    <select id="selectHtcpmdStructureTagById" parameterType="String" resultMap="HtcpmdStructureTagResult">
+        <include refid="selectHtcpmdStructureTagVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHtcpmdStructureTag" parameterType="HtcpmdStructureTag" useGeneratedKeys="true" keyProperty="id">
+        insert into htcpmd_structure_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="description != null">description,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delSts != null">del_sts,</if>
+            <if test="verNo != null">ver_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delSts != null">#{delSts},</if>
+            <if test="verNo != null">#{verNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHtcpmdStructureTag" parameterType="HtcpmdStructureTag">
+        update htcpmd_structure_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delSts != null">del_sts = #{delSts},</if>
+            ver_no = #{verNo} + 1,
+        </trim>
+        <where>
+            and id = #{id}
+            <if test="verNo != null and verNo != ''"> and ver_no = #{verNo}</if>
+        </where>
+    </update>
+
+    <delete id="deleteHtcpmdStructureTagById" parameterType="String">
+        delete from htcpmd_structure_tag where id = #{id}
+    </delete>
+
+    <delete id="deleteHtcpmdStructureTagByIds" parameterType="String">
+        delete from htcpmd_structure_tag where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

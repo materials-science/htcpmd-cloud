@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.NumberUtil;
 import cn.poryoung.htcpmd.common.constant.BusinessErrorStatusEnum;
 import cn.poryoung.htcpmd.common.constant.SystemErrorStatusEnum;
-import cn.poryoung.htcpmd.common.exception.BussinessException;
+import cn.poryoung.htcpmd.common.exception.BusinessException;
 import cn.poryoung.htcpmd.common.exception.SystemException;
 import cn.poryoung.htcpmd.common.pojo.CommonResp;
 import cn.poryoung.htcpmd.common.util.CommonAssembler;
@@ -31,8 +31,8 @@ public class demoAppServiceImpl implements DemoAppService {
 
     @Override
     @RequestMapping("/info/{id}")
-    public CommonResp getDemoInfo(@PathVariable("id") String id) throws BussinessException, SystemException {
-        BussinessException.throwExceptionIfTrue(!NumberUtil.isNumber(id), BusinessErrorStatusEnum.BUSINESS_ERROR.getCode(), "The id must be a valid number.");
+    public CommonResp getDemoInfo(@PathVariable("id") String id) throws BusinessException, SystemException {
+        BusinessException.throwExceptionIfTrue(!NumberUtil.isNumber(id), BusinessErrorStatusEnum.BUSINESS_ERROR.getCode(), "The id must be a valid number.");
         SystemException.throwExceptionIfTrue(NumberUtil.isOdd(Convert.toInt(id)), SystemErrorStatusEnum.FAILED.getCode(), "ids that are odds not available!");
 
         return CommonAssembler.covert2Dto(demoDomainService.getDemoInfo(id), demoRespDto.class);

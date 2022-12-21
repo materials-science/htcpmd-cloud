@@ -94,12 +94,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update ${tableName}
         <trim prefix="SET" suffixOverrides=",">
 #foreach($column in $columns)
-#if($column.columnName != $pkColumn.columnName)
+#if($column.columnName == "ver_no")
+            ver_no = #{verNo} + 1,
+#elseif($column.columnName != $pkColumn.columnName)
             <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">$column.columnName = #{$column.javaField},</if>
 #end
 #end
         </trim>
-        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        <where>
+            and ${pkColumn.columnName} = #{${pkColumn.javaField}}
+            <if test="verNo != null and verNo != ''"> and ver_no = #{verNo}</if>
+        </where>
     </update>
 
     <delete id="delete${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}">

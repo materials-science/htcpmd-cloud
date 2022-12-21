@@ -46,4 +46,9 @@ public class SecurityConstants
      * 角色权限
      */
     public static final String ROLE_PERMISSION = "role_permission";
+
+    /**
+     * Current Group
+     * */
+    public static final String GROUP_ID = "group_id";
 }

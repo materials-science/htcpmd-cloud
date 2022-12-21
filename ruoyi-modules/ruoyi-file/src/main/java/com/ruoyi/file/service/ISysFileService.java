@@ -15,6 +15,7 @@ public interface ISysFileService
      * @param file 上传的文件
      * @return 访问地址
      * @throws Exception
+     * @todo 优化文件上传接口，支持多文件上传，数据持久化
      */
     public String uploadFile(MultipartFile file) throws Exception;
 }

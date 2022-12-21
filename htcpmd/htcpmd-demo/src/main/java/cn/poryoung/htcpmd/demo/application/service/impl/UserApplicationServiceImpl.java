@@ -3,9 +3,9 @@ package cn.poryoung.htcpmd.demo.application.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.poryoung.htcpmd.common.constant.BusinessErrorStatusEnum;
-import cn.poryoung.htcpmd.common.constant.CommonConstant;
+import cn.poryoung.htcpmd.common.constant.HtcpmdCommonConstant;
 import cn.poryoung.htcpmd.common.constant.SystemErrorStatusEnum;
-import cn.poryoung.htcpmd.common.exception.BussinessException;
+import cn.poryoung.htcpmd.common.exception.BusinessException;
 import cn.poryoung.htcpmd.common.exception.SystemException;
 import cn.poryoung.htcpmd.demo.application.service.UserApplicationService;
 import cn.poryoung.htcpmd.demo.infrastructure.proxy.AuthProxyService;
@@ -46,7 +46,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public R<?> login(@RequestParam String username, @RequestParam String password) {
         Map<String, String> params = new HashMap<>();
-        params.put("client_id", CommonConstant.DEMO_CLIENT_ID);
+        params.put("client_id", HtcpmdCommonConstant.DEMO_CLIENT_ID);
         params.put("client_secret", "demo-secret");
         params.put("grant_type", "password");
         params.put("username", username);
@@ -58,11 +58,11 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     @ApiOperation("获取用户信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
-    public R<LoginUser> profile() throws BussinessException, SystemException {
+    public R<LoginUser> profile() throws BusinessException, SystemException {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        BussinessException.throwExceptionIfTrue(ObjectUtil.isNull(loginUser), BusinessErrorStatusEnum.BUSINESS_ERROR.getCode(), "用户信息不存在(请检查网关配置)");
+        BusinessException.throwExceptionIfTrue(ObjectUtil.isNull(loginUser), BusinessErrorStatusEnum.BUSINESS_ERROR.getCode(), "用户信息不存在(请检查网关配置)");
         // todo: get user info from cache
-        LoginUser respDto = BeanUtil.copyProperties(redisService.getCacheMapValue(CommonConstant.REDIS_KEY_USER, String.valueOf(loginUser.getUserid())), LoginUser.class);
+        LoginUser respDto = BeanUtil.copyProperties(redisService.getCacheMapValue(HtcpmdCommonConstant.REDIS_KEY_USER, String.valueOf(loginUser.getUserid())), LoginUser.class);
         if (ObjectUtil.isNull(respDto)) {
             // todo: load user form remote call
             respDto = BeanUtil.copyProperties(userProxyService.getUserInfo(SecurityConstants.INNER).get(AjaxResult.DATA_TAG), LoginUser.class);

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.poryoung.htcpmd.center.infrastructure.persistence.mapper.HtcpmdGroupMapper">
+
+    <resultMap type="HtcpmdGroup" id="HtcpmdGroupResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="title" column="title"/>
+        <result property="profile" column="profile"/>
+        <result property="avatar" column="avatar"/>
+        <result property="status" column="status"/>
+        <result property="visiable" column="visiable"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delSts" column="del_sts"/>
+        <result property="verNo" column="ver_no"/>
+    </resultMap>
+
+    <sql id="selectHtcpmdGroupVo">
+        select id,
+               name,
+               title,
+               profile,
+               avatar,
+               status,
+               visiable,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_sts,
+               ver_no
+        from htcpmd_group
+    </sql>
+
+    <select id="selectHtcpmdGroupList" parameterType="HtcpmdGroup" resultMap="HtcpmdGroupResult">
+        <include refid="selectHtcpmdGroupVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="profile != null  and profile != ''">and profile = #{profile}</if>
+            <if test="avatar != null  and avatar != ''">and avatar = #{avatar}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="visiable != null ">and visiable = #{visiable}</if>
+            <if test="delSts != null ">and del_sts = #{delSts}</if>
+            <if test="verNo != null ">and ver_no = #{verNo}</if>
+        </where>
+    </select>
+
+    <select id="selectHtcpmdGroupById" parameterType="String" resultMap="HtcpmdGroupResult">
+        <include refid="selectHtcpmdGroupVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertHtcpmdGroup" parameterType="HtcpmdGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into htcpmd_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="title != null">title,</if>
+            <if test="profile != null">profile,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="status != null">status,</if>
+            <if test="visiable != null">visiable,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delSts != null">del_sts,</if>
+            <if test="verNo != null">ver_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="title != null">#{title},</if>
+            <if test="profile != null">#{profile},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="status != null">#{status},</if>
+            <if test="visiable != null">#{visiable},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delSts != null">#{delSts},</if>
+            <if test="verNo != null">#{verNo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHtcpmdGroup" parameterType="HtcpmdGroup">
+        update htcpmd_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="profile != null">profile = #{profile},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="visiable != null">visiable = #{visiable},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delSts != null">del_sts = #{delSts},</if>
+            ver_no = #{verNo} + 1,
+        </trim>
+        <where>
+            and id = #{id}
+            <if test="verNo != null and verNo != ''">and ver_no = #{verNo}</if>
+        </where>
+    </update>
+
+    <delete id="deleteHtcpmdGroupById" parameterType="String">
+        delete
+        from htcpmd_group
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteHtcpmdGroupByIds" parameterType="String">
+        delete from htcpmd_group where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

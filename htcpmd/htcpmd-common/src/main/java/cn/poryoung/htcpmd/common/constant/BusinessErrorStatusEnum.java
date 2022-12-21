@@ -3,7 +3,14 @@ package cn.poryoung.htcpmd.common.constant;
 public enum BusinessErrorStatusEnum implements ErrorStatusEnum {
     BUSINESS_ERROR(ErrorStatusPrefixEnum.BUSINESS.addPrefix("1"), "Failed to handle this business!"),
 
-    USER_NOT_FOUND(ErrorStatusPrefixEnum.BUSINESS.addPrefix("2"), "Failed to get the user Info!");
+    USER_NOT_FOUND(ErrorStatusPrefixEnum.BUSINESS.addPrefix("2"), "Failed to get the user Info!"),
+
+    FILE_UPLOAD_ERROR(ErrorStatusPrefixEnum.BUSINESS.addPrefix("3"), "Failed to upload file!"),
+
+    INVALID_REQUEST_PARAMETERS(ErrorStatusPrefixEnum.BUSINESS.addPrefix("3"), "无效的请求参数!"),
+
+    FAILED_TO_CREATE_A_BIZ_JOB(ErrorStatusPrefixEnum.BUSINESS.addPrefix("4"), "创建业务任务失败"),
+    ;
 
     private String code;
     private String msg;
