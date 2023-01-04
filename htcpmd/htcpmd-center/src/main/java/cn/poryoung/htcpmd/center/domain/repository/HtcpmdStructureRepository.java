@@ -3,7 +3,6 @@ package cn.poryoung.htcpmd.center.domain.repository;
 import cn.poryoung.htcpmd.center.domain.entity.HtcpmdStructure;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * structure 信息 Repository接口
@@ -19,6 +18,14 @@ public interface HtcpmdStructureRepository {
      * @return structure 信息
      */
     public HtcpmdStructure selectHtcpmdStructureById(String id);
+
+    /**
+     * 查询structure 信息
+     *
+     * @param uuid structure 信息主键
+     * @return structure 信息
+     */
+    public HtcpmdStructure selectHtcpmdStructureByUuid(String uuid);
 
     /**
      * 查询structure 信息列表
@@ -42,7 +49,7 @@ public interface HtcpmdStructureRepository {
      * @param htcpmdStructureList structure 信息List
      * @return 结果
      */
-    public int insertBatch(Set<HtcpmdStructure> htcpmdStructureList);
+    public int insertBatch(List<HtcpmdStructure> htcpmdStructureList);
 
     /**
      * 修改structure 信息

@@ -1,16 +1,19 @@
-package cn.poryoung.htcpmd.center.domain.entity;
+package cn.poryoung.htcpmd.center.domain.entity.es;
 
+import cn.poryoung.htcpmd.common.pojo.BaseDo;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.io.Serializable;
-
 @Data
-public class EsStructureTag implements Serializable {
+public class EsStructureTag extends BaseDo {
     private static final long serialVersionUID = 1L;
 
+    @Id
     private String id;
+
+    private String uuid;
 
     /**
      * 标签名称
@@ -23,14 +26,4 @@ public class EsStructureTag implements Serializable {
      */
     @Field(type = FieldType.Text)
     private String description;
-
-    /**
-     * 群组ID
-     */
-    private Long groupId;
-
-    /**
-     * 版本号
-     */
-    private Long verNo;
 }

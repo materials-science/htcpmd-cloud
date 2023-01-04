@@ -999,7 +999,7 @@ export default {
 				this.$message.error("UUID is None!");
 			}
 			this.$router.push({
-				path: `/structures/detail/${uuid}`
+				path: `/structure/detail/${uuid}`
 			});
 		},
 		addNewStructure() {
@@ -1016,11 +1016,11 @@ export default {
 			}
 			this.loading_structures = true;
 			this.$api
-				.GetObj("/structures/", this.new_structure_id)
+				.GetObj("/structure/", this.new_structure_id)
 				.then(resp => {
 					this.loading_structures = false;
 					try {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.structures.push(resp.data);
 							this.saveStructures(this.structures);
 							this.new_structure_id = "";
@@ -1044,7 +1044,7 @@ export default {
 			this.$api
 				.GetList("/computers/", { label: query, uuid: query })
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.computers_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -1070,7 +1070,7 @@ export default {
 					computer: this.calctasks_settings.computer
 				})
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.codes_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -1089,7 +1089,7 @@ export default {
 					uuid: query
 				})
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.pseudo_family_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -1261,7 +1261,7 @@ export default {
 		this.$api
 			.GetList(`/calctask_types/`, { category_name: "Wannier" })
 			.then(resp => {
-				if (resp.code == 0) {
+				if (resp.code == 200) {
 					let data = resp.data;
 					let calctasks_types = [];
 					data.forEach(item => {
@@ -1287,7 +1287,7 @@ export default {
 		this.$api
 			.GetList(`/available_protocols/`, { type: "pw" })
 			.then(resp => {
-				if (resp.code == 0) {
+				if (resp.code == 200) {
 					let protocols_data = resp.data;
 					let protocols = [];
 					for (let key in protocols_data) {

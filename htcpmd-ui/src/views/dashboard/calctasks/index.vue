@@ -491,7 +491,7 @@ export default {
 				this.$message.error("Structure UUID is None!");
 			}
 			this.$router.push({
-				path: `/structures/detail/${uuid}`
+				path: `/structure/detail/${uuid}`
 			});
 		},
 		addNewTasks() {

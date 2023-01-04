@@ -1,6 +1,6 @@
 package cn.poryoung.htcpmd.center.domain.service.impl;
 
-import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.poryoung.htcpmd.center.domain.entity.CommonFile;
 import cn.poryoung.htcpmd.center.domain.repository.CommonFileRepository;
 import cn.poryoung.htcpmd.center.domain.service.CommonFileDomainService;
@@ -39,7 +39,7 @@ public class CommonFileDomainServiceImpl implements CommonFileDomainService {
     @Override
     public List<FileInfo> upload(List<MultipartFile> fileList) throws BusinessException, SystemException {
         // upload files
-        BusinessException.throwExceptionIfTrue(ArrayUtil.isEmpty(fileList), BusinessErrorStatusEnum.INVALID_REQUEST_PARAMETERS.getCode(), "上传文件为空！");
+        BusinessException.throwExceptionIfTrue(CollectionUtil.isEmpty(fileList), BusinessErrorStatusEnum.INVALID_REQUEST_PARAMETERS.getCode(), "上传文件为空！");
         List<FileInfo> fileInfoList = new ArrayList<>(fileList.size());
         for (var file : fileList) {
             FileInfo fileInfo = fileStorageService.of(file).upload();

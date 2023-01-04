@@ -4,6 +4,7 @@ import com.ruoyi.common.core.web.page.PageDomain;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class EsStructureSearchDto extends PageDomain {
     /**
      * search mode
      */
-    @NotBlank
-    private String mode;
+    @NotNull
+    private Integer mode;
 
     /**
      * elements seperated by "-", eg. As-In
@@ -41,4 +42,9 @@ public class EsStructureSearchDto extends PageDomain {
      * structure tag names
      */
     private List<String> tags;
+
+    /**
+     * debug mode
+     */
+    private String get_all;
 }

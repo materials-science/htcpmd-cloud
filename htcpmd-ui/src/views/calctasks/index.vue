@@ -284,7 +284,7 @@ export default {
 	methods: {
 		getTasksInfo() {
 			return this.$api.ApiRequest(`${apiPrefix}info`).then(resp => {
-				if (resp.code == 0) {
+				if (resp.code == 200) {
 					this.calctasks_info = resp.data;
 					this.loading_calctasks_info = false;
 					console.log(this.calctasks_info);
@@ -335,7 +335,7 @@ export default {
 				this.$message.error("Structure UUID is None!");
 			}
 			this.$router.push({
-				path: `/structures/${uuid}`
+				path: `/structure/${uuid}`
 			});
 		},
 		addNewTasks() {

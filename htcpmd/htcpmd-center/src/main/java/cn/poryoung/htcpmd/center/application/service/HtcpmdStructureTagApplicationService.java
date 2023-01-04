@@ -1,50 +1,65 @@
 package cn.poryoung.htcpmd.center.application.service;
 
-import java.util.List;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.IdUtil;
+import cn.poryoung.htcpmd.center.domain.entity.HtcpmdStructureTag;
+import cn.poryoung.htcpmd.center.domain.entity.mongo.StructureTagDoc;
+import cn.poryoung.htcpmd.center.domain.service.HtcpmdStructureTagDomainService;
+import cn.poryoung.htcpmd.center.domain.service.StructureTagDocDomainService;
+import cn.poryoung.htcpmd.common.constant.BusinessErrorStatusEnum;
+import cn.poryoung.htcpmd.common.exception.BusinessException;
+import cn.poryoung.htcpmd.common.pojo.PageSupport;
+import cn.poryoung.htcpmd.common.util.BaseApplicationService;
+import cn.poryoung.htcpmd.common.util.CustRequestHelper;
+import com.ruoyi.common.core.utils.poi.ExcelUtil;
+import com.ruoyi.common.core.web.domain.AjaxResult;
+import com.ruoyi.common.core.web.page.TableDataInfo;
 import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.security.annotation.RequiresPermissions;
-import cn.poryoung.htcpmd.center.domain.entity.HtcpmdStructureTag;
-import cn.poryoung.htcpmd.center.domain.service.HtcpmdStructureTagDomainService;
-import com.ruoyi.common.core.web.controller.BaseController;
-import com.ruoyi.common.core.web.domain.AjaxResult;
-import com.ruoyi.common.core.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.web.page.TableDataInfo;
+import com.ruoyi.common.security.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * structure 标签信息 Application Service
- * 
+ *
  * @author PorYoung
  * @date 2022-12-15
  */
 @RestController
 @RequestMapping("/structure_tag")
-public class HtcpmdStructureTagApplicationService extends BaseController
-{
+public class HtcpmdStructureTagApplicationService extends BaseApplicationService {
     @Autowired
     private HtcpmdStructureTagDomainService htcpmdStructureTagDomainService;
+    @Autowired
+    private StructureTagDocDomainService structureTagDocDomainService;
+
+    /**
+     * 查询structure 标签信息列表
+     */
+    @RequiresPermissions("htcpmd-center:structure_tag:search")
+    @GetMapping("/search")
+    public TableDataInfo search(@RequestParam("name") String name) {
+        Page<StructureTagDoc> structureTagDocPage = structureTagDocDomainService.searchByName(name);
+        return getDataTable(structureTagDocPage);
+    }
+
 
     /**
      * 查询structure 标签信息列表
      */
     @RequiresPermissions("htcpmd-center:structure_tag:list")
     @GetMapping("/list")
-    public TableDataInfo list(HtcpmdStructureTag htcpmdStructureTag)
-    {
-        startPage();
-        List<HtcpmdStructureTag> list = htcpmdStructureTagDomainService.selectHtcpmdStructureTagList(htcpmdStructureTag);
-        return getDataTable(list);
+    public TableDataInfo list() {
+//        startPage();
+//        List<HtcpmdStructureTag> list = htcpmdStructureTagDomainService.selectHtcpmdStructureTagList(htcpmdStructureTag);
+        Page<StructureTagDoc> structureTagDocPage = structureTagDocDomainService.findAll(PageSupport.getPageable());
+        return getDataTable(structureTagDocPage);
     }
 
     /**
@@ -53,10 +68,10 @@ public class HtcpmdStructureTagApplicationService extends BaseController
     @RequiresPermissions("htcpmd-center:structure_tag:export")
     @Log(title = "structure 标签信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, HtcpmdStructureTag htcpmdStructureTag)
-    {
-        List<HtcpmdStructureTag> list = htcpmdStructureTagDomainService.selectHtcpmdStructureTagList(htcpmdStructureTag);
-        ExcelUtil<HtcpmdStructureTag> util = new ExcelUtil<HtcpmdStructureTag>(HtcpmdStructureTag.class);
+    public void export(HttpServletResponse response, HtcpmdStructureTag htcpmdStructureTag) {
+//        List<HtcpmdStructureTag> list = htcpmdStructureTagDomainService.selectHtcpmdStructureTagList(htcpmdStructureTag);
+        List<StructureTagDoc> list = structureTagDocDomainService.findAll();
+        ExcelUtil<StructureTagDoc> util = new ExcelUtil<StructureTagDoc>(StructureTagDoc.class);
         util.exportExcel(response, list, "structure 标签信息数据");
     }
 
@@ -64,10 +79,10 @@ public class HtcpmdStructureTagApplicationService extends BaseController
      * 获取structure 标签信息详细信息
      */
     @RequiresPermissions("htcpmd-center:structure_tag:query")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
-        return success(htcpmdStructureTagDomainService.selectHtcpmdStructureTagById(id));
+    @GetMapping(value = "/{name}")
+    public AjaxResult getInfo(@PathVariable("name") String name) {
+//        return success(htcpmdStructureTagDomainService.selectHtcpmdStructureTagById(id));
+        return success(structureTagDocDomainService.findStructureTagDocByName(name));
     }
 
     /**
@@ -76,9 +91,14 @@ public class HtcpmdStructureTagApplicationService extends BaseController
     @RequiresPermissions("htcpmd-center:structure_tag:add")
     @Log(title = "structure 标签信息", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HtcpmdStructureTag htcpmdStructureTag)
-    {
-        return toAjax(htcpmdStructureTagDomainService.insertHtcpmdStructureTag(htcpmdStructureTag));
+    public AjaxResult add(@RequestBody StructureTagDoc structureTagDoc) throws BusinessException {
+//        return toAjax(htcpmdStructureTagDomainService.insertHtcpmdStructureTag(htcpmdStructureTag));
+        BusinessException.throwExceptionIfTrue(structureTagDocDomainService.existsByName(structureTagDoc.getName()), BusinessErrorStatusEnum.DUPLICATE_STRUCTURE_TAG, null);
+        structureTagDoc.setUuid(IdUtil.simpleUUID());
+        structureTagDoc.setCreateBy(String.valueOf(SecurityUtils.getUserId()));
+        structureTagDoc.setCreateTime(DateTime.now());
+        structureTagDoc.setGroupId(CustRequestHelper.getGroupId());
+        return success(structureTagDocDomainService.save(structureTagDoc));
     }
 
     /**
@@ -87,9 +107,11 @@ public class HtcpmdStructureTagApplicationService extends BaseController
     @RequiresPermissions("htcpmd-center:structure_tag:edit")
     @Log(title = "structure 标签信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HtcpmdStructureTag htcpmdStructureTag)
-    {
-        return toAjax(htcpmdStructureTagDomainService.updateHtcpmdStructureTag(htcpmdStructureTag));
+    public AjaxResult edit(@RequestBody StructureTagDoc structureTagDoc) {
+//        return toAjax(htcpmdStructureTagDomainService.updateHtcpmdStructureTag(htcpmdStructureTag));
+        structureTagDoc.setUpdateBy(String.valueOf(SecurityUtils.getUserId()));
+        structureTagDoc.setUpdateTime(DateTime.now());
+        return success(structureTagDocDomainService.save(structureTagDoc));
     }
 
     /**
@@ -97,9 +119,10 @@ public class HtcpmdStructureTagApplicationService extends BaseController
      */
     @RequiresPermissions("htcpmd-center:structure_tag:remove")
     @Log(title = "structure 标签信息", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
-        return toAjax(htcpmdStructureTagDomainService.deleteHtcpmdStructureTagByIds(ids));
+    @DeleteMapping("/{id}")
+    public AjaxResult remove(@PathVariable String id) {
+//        return toAjax(htcpmdStructureTagDomainService.deleteHtcpmdStructureTagByIds(ids));
+        structureTagDocDomainService.deleteById(id);
+        return success();
     }
 }

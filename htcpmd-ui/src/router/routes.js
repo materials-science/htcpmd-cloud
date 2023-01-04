@@ -2,8 +2,9 @@ import layoutHeaderAside from "@/layout/header-aside";
 import dataModules from "./modules/data";
 import dashboard from "./modules/dashboard";
 import cluster from "./modules/cluster";
-import structures from "./modules/structures";
+import structure from "./modules/structure";
 import calctasks from "./modules/calctasks";
+import user from "./modules/user";
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
 const _import = require("@/libs/util.import." + process.env.NODE_ENV);
@@ -31,15 +32,6 @@ const frameIn = [
         },
         component: _import("index")
       },
-      {
-        path: "users",
-        name: "users",
-        meta: {
-          title: "User Table",
-          auth: true
-        },
-        component: _import("dashboard/user-table")
-      },
       // 系统 前端日志
       {
         path: "log",
@@ -66,10 +58,11 @@ const frameIn = [
       }
     ]
   },
+  user,
   dataModules,
   dashboard,
   cluster,
-  structures,
+  structure,
   calctasks
 ];
 

@@ -80,7 +80,7 @@ public class HtcpmdBizJob extends BaseEntity {
      * 群组ID
      */
     @Excel(name = "群组ID")
-    private Long groupId;
+    private String groupId;
 
     /**
      * 删除状态
@@ -187,11 +187,11 @@ public class HtcpmdBizJob extends BaseEntity {
         this.attributes = attributes;
     }
 
-    public Long getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Long groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 

@@ -202,7 +202,7 @@
 <script>
 import PeriodicTable from "./components/PeriodicTable";
 export default {
-	name: "structures-index",
+	name: "structure-index",
 	components: {
 		PeriodicTable
 	},

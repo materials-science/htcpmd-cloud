@@ -1,6 +1,6 @@
 export default {
-  path: "/structures",
-  title: "Structures",
+  path: "/structure",
+  title: "Structure",
   icon: "cubes",
   children: (pre => [
     {
@@ -18,5 +18,5 @@ export default {
       title: "Import from AiiDA",
       icon: "square-o"
     }
-  ])("/structures/")
+  ])("/structure/")
 };

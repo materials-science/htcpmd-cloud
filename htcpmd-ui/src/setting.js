@@ -83,8 +83,12 @@ export default {
   // Api Service Prefix
   api: {
     auth: "/auth",
-    htcpmd_system: "/htcpmd-system",
+    htcpmd_center: "/htcpmd-center",
     htcpmd_aiida: "/aiida-server",
     system: "/system"
+  },
+  // file storage
+  file: {
+    max: "200" // MB
   }
 };

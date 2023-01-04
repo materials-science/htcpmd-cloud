@@ -3,6 +3,7 @@ import Adapter from "axios-mock-adapter";
 import { get, set } from "lodash";
 import util from "@/libs/util";
 import { errorLog, errorCreate } from "./tools";
+import store from "@/store/index";
 
 /**
  * @description 创建请求实例
@@ -53,6 +54,10 @@ function createService() {
             console.log(dataAxios);
             // return dataAxios.data
             return dataAxios;
+          case 401:
+            store.dispatch("d2admin/account/logout");
+            errorCreate("无效的会话，或者会话已过期，请重新登录。");
+            break;
           default:
             // 不是正确的 code
             const msg = dataAxios.msg;

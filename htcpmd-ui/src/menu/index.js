@@ -2,7 +2,7 @@ import { uniqueId } from "lodash";
 import dashboard from "@/menu/modules/dashboard";
 import data from "@/menu/modules/data";
 import cluster from "@/menu/modules/cluster";
-import structures from "@/menu/modules/structures";
+import structure from "@/menu/modules/structure";
 import calctasks from "@/menu/modules/calctasks";
 
 /**
@@ -24,12 +24,12 @@ function supplementPath(menu) {
 
 export const menuHeader = supplementPath([
   dashboard,
-  structures,
+  structure,
   cluster,
   calctasks,
   data,
   {
-    path: "/users",
+    path: "/user",
     title: "Users",
     icon: "user"
   }

@@ -39,12 +39,12 @@ const pages = undefined;
 const proxyObj = {
 	"/ws": {
 		ws: true,
-		target: "ws://localhost:8080",
+		target: "ws://localhost:9088",
 		changeOrigin: true
 	},
 	"/api": {
 		ws: false,
-		target: `http://localhost:8080`,
+		target: `http://localhost:9088`,
 		changeOrigin: true,
 		pathRewrite: {
 			"^/api": ""
@@ -52,7 +52,7 @@ const proxyObj = {
 	},
 	"/static": {
 		ws: false,
-		target: "http://localhost:8080",
+		target: "http://localhost:9088",
 		changeOrigin: true,
 		pathRewrite: {
 			"^/static": "/static"

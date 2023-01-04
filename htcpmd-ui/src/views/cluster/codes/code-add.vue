@@ -198,7 +198,7 @@ export default {
 					data.input_plugin = data.input_plugin.join(".");
 					data.user = util.cookies.get("uuid");
 					this.$api.AddObj(apiPrefix, data).then(resp => {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.$message.success("Upload Success!");
 						}
 						this.fullscreenLoading = false;

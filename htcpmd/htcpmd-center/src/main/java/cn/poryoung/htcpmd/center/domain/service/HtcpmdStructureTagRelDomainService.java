@@ -1,7 +1,9 @@
 package cn.poryoung.htcpmd.center.domain.service;
 
-import java.util.List;
 import cn.poryoung.htcpmd.center.domain.entity.HtcpmdStructureTagRel;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * structure 标签关联 领域Service接口
@@ -58,4 +60,6 @@ public interface HtcpmdStructureTagRelDomainService
      * @return 结果
      */
     public int deleteHtcpmdStructureTagRelById(String id);
+
+    public int insertBatch(List<HtcpmdStructureTagRel> htcpmdStructureTagRels);
 }

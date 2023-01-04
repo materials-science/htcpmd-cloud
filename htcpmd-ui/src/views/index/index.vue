@@ -10,7 +10,7 @@
 export default {
   name: "index",
   beforeCreate() {
-    this.$router.replace("/structures/");
+    this.$router.replace("/structure/");
   }
 };
 </script>

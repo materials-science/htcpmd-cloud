@@ -1,15 +1,23 @@
 package cn.poryoung.htcpmd.common.pojo;
 
+import cn.poryoung.htcpmd.common.constant.HtcpmdCommonConstant;
 import com.ruoyi.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
 @Data
 public class BaseDo extends BaseEntity {
-    private String updateBy;
+    /**
+     * 群组ID
+     */
+    private String groupId = HtcpmdCommonConstant.PUBLIC_GROUP_ID;
 
-    private String createBy;
+    /**
+     * 删除状态
+     */
+    private Boolean delSts = false;
 
-    private Boolean delSts;
-
-    private Integer verNo;
+    /**
+     * 版本号
+     */
+    private Long verNo = 1L;
 }

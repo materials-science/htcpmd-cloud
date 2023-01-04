@@ -52,6 +52,11 @@
         where id = #{id}
     </select>
 
+    <select id="selectHtcpmdStructureByUuid" parameterType="String" resultMap="HtcpmdStructureResult">
+        <include refid="selectHtcpmdStructureVo"/>
+        where uuid = #{uuid}
+    </select>
+
     <insert id="insertHtcpmdStructure" parameterType="HtcpmdStructure" useGeneratedKeys="true" keyProperty="id">
         insert into htcpmd_structure
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -123,21 +128,17 @@
         cover_img,
         group_id,
         attributes,
-        create_by,
-        create_time,
-        update_by,
-        update_time)
+        create_by)
         values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.uuid},
+            (
+            #{item.uuid},
             #{item.filepath},
             #{item.coverImg},
             #{item.groupId},
             #{item.attributes},
-            #{item.createBy},
-            #{item.createTime},
-            #{item.updateBy},
-            #{item.updateTime})
+            #{item.createBy}
+            )
         </foreach>
     </insert>
 </mapper>

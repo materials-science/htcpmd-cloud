@@ -1,7 +1,8 @@
 package cn.poryoung.htcpmd.center.domain.repository;
 
-import java.util.List;
 import cn.poryoung.htcpmd.center.domain.entity.HtcpmdStructureTag;
+
+import java.util.List;
 
 /**
  * structure 标签信息 Repository接口
@@ -18,6 +19,14 @@ public interface HtcpmdStructureTagRepository
      * @return structure 标签信息
      */
     public HtcpmdStructureTag selectHtcpmdStructureTagById(String id);
+
+    /**
+     * 查询structure 标签信息
+     *
+     * @param name structure 标签 name
+     * @return structure 标签信息
+     */
+    public HtcpmdStructureTag selectHtcpmdStructureTagByName(String name);
 
     /**
      * 查询structure 标签信息列表

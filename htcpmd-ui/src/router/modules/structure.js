@@ -7,18 +7,18 @@ const meta = {
   auth: true
 };
 export default {
-  path: "/structures",
-  name: "structures",
+  path: "/structure",
+  name: "structure",
   meta,
   redirect: {
-    name: "structures-index"
+    name: "structure-index"
   },
   component: layoutHeaderAside,
   children: (pre => [
     {
       path: "",
       name: `${pre}index`,
-      component: _import("structures"),
+      component: _import("structure"),
       meta: {
         ...meta,
         cache: true,
@@ -29,7 +29,7 @@ export default {
     {
       path: "search",
       name: `${pre}search`,
-      component: _import("structures/search"),
+      component: _import("structure/search"),
       meta: {
         ...meta,
         cache: true,
@@ -40,7 +40,7 @@ export default {
     {
       path: "detail/:uuid",
       name: `${pre}detail`,
-      component: _import("structures/detail.vue"),
+      component: _import("structure/detail.vue"),
       meta: {
         ...meta,
         cache: true,
@@ -50,7 +50,7 @@ export default {
     {
       path: "upload",
       name: `${pre}upload`,
-      component: _import("structures/uploads/upload.vue"),
+      component: _import("structure/uploads/upload.vue"),
       meta: {
         ...meta,
         title: "Upload Structure"
@@ -59,11 +59,11 @@ export default {
     {
       path: "import/aiida",
       name: `${pre}import-aiida`,
-      component: _import("structures/uploads/import.vue"),
+      component: _import("structure/uploads/import.vue"),
       meta: {
         ...meta,
         title: "Import from AiiDA"
       }
     }
-  ])("structures-")
+  ])("structure-")
 };

@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.poryoung.htcpmd.center.infrastructure.persistence.mapper.HtcpmdStructureTagRelMapper">
-    
+
     <resultMap type="HtcpmdStructureTagRel" id="HtcpmdStructureTagRelResult">
-        <result property="id"    column="id"    />
-        <result property="structureId"    column="structure_id"    />
-        <result property="tagId"    column="tag_id"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="delSts"    column="del_sts"    />
-        <result property="verNo"    column="ver_no"    />
+        <result property="id" column="id"/>
+        <result property="structureId" column="structure_id"/>
+        <result property="tagId" column="tag_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delSts" column="del_sts"/>
+        <result property="verNo" column="ver_no"/>
     </resultMap>
 
     <sql id="selectHtcpmdStructureTagRelVo">
-        select id, structure_id, tag_id, create_by, create_time, update_by, update_time, del_sts, ver_no from htcpmd_structure_tag_rel
+        select id,
+               structure_id,
+               tag_id,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_sts,
+               ver_no
+        from htcpmd_structure_tag_rel
     </sql>
 
-    <select id="selectHtcpmdStructureTagRelList" parameterType="HtcpmdStructureTagRel" resultMap="HtcpmdStructureTagRelResult">
+    <select id="selectHtcpmdStructureTagRelList" parameterType="HtcpmdStructureTagRel"
+            resultMap="HtcpmdStructureTagRelResult">
         <include refid="selectHtcpmdStructureTagRelVo"/>
-        <where>  
-            <if test="structureId != null  and structureId != ''"> and structure_id = #{structureId}</if>
-            <if test="tagId != null  and tagId != ''"> and tag_id = #{tagId}</if>
+        <where>
+            <if test="structureId != null  and structureId != ''">and structure_id = #{structureId}</if>
+            <if test="tagId != null  and tagId != ''">and tag_id = #{tagId}</if>
         </where>
     </select>
-    
+
     <select id="selectHtcpmdStructureTagRelById" parameterType="String" resultMap="HtcpmdStructureTagRelResult">
         <include refid="selectHtcpmdStructureTagRelVo"/>
         where id = #{id}
     </select>
-        
-    <insert id="insertHtcpmdStructureTagRel" parameterType="HtcpmdStructureTagRel" useGeneratedKeys="true" keyProperty="id">
+
+    <insert id="insertHtcpmdStructureTagRel" parameterType="HtcpmdStructureTagRel" useGeneratedKeys="true"
+            keyProperty="id">
         insert into htcpmd_structure_tag_rel
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="structureId != null and structureId != ''">structure_id,</if>
@@ -44,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
             <if test="delSts != null">del_sts,</if>
             <if test="verNo != null">ver_no,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="structureId != null and structureId != ''">#{structureId},</if>
             <if test="tagId != null and tagId != ''">#{tagId},</if>
@@ -54,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
             <if test="delSts != null">#{delSts},</if>
             <if test="verNo != null">#{verNo},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateHtcpmdStructureTagRel" parameterType="HtcpmdStructureTagRel">
@@ -71,18 +82,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         <where>
             and id = #{id}
-            <if test="verNo != null and verNo != ''"> and ver_no = #{verNo}</if>
+            <if test="verNo != null and verNo != ''">and ver_no = #{verNo}</if>
         </where>
     </update>
 
     <delete id="deleteHtcpmdStructureTagRelById" parameterType="String">
-        delete from htcpmd_structure_tag_rel where id = #{id}
+        delete
+        from htcpmd_structure_tag_rel
+        where id = #{id}
     </delete>
 
     <delete id="deleteHtcpmdStructureTagRelByIds" parameterType="String">
-        delete from htcpmd_structure_tag_rel where id in 
+        delete from htcpmd_structure_tag_rel where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
+
+    <insert id="insertBatch">
+        insert into htcpmd_structure_tag_rel
+        (structure_id, tag_id, create_by) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+            #{item.structureId},
+            #{item.tagId},
+            #{item.createBy}
+            )
+        </foreach>
+    </insert>
 </mapper>

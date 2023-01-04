@@ -14,6 +14,7 @@ import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.security.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,12 +36,21 @@ public class CommonFileApplicationService extends BaseController {
     private FileStorageService fileStorageService;
 
     /**
-     * uplaod file
+     * upload file
      */
     @RequiresPermissions("htcpmd-common:common_file:upload")
     @PostMapping("/upload")
     public AjaxResult upload(@RequestPart("file") List<MultipartFile> fileList) throws BusinessException, SystemException {
         return AjaxResult.success(commonFileDomainService.upload(fileList));
+    }
+
+    /**
+     * download file
+     */
+    @RequiresPermissions("htcpmd-common:common_file:download")
+    @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public byte[] download(@RequestParam("url") String url) {
+        return fileStorageService.download(url).bytes();
     }
 
     /**

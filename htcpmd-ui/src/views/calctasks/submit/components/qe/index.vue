@@ -78,7 +78,7 @@ export default {
 		this.$api
 			.GetList(`/calctask_types/`, { category_name: "QuantumEspresso" })
 			.then(resp => {
-				if (resp.code == 0) {
+				if (resp.code == 200) {
 					this.calctasks_types = resp.data;
 				} else {
 					this.$message.error("No CalcTasks Types Avaliable.");

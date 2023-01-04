@@ -5,7 +5,7 @@ import lombok.Getter;
 import static cn.poryoung.htcpmd.center.constant.HtcpmdCenterMqConstant.*;
 
 @Getter
-public enum HtcpmdCenterMqEnum {
+public enum HtcpmdEventMqEnum {
     /**
      * htcpmd center task queue
      */
@@ -13,7 +13,8 @@ public enum HtcpmdCenterMqEnum {
     BIZ_JOB_STATUS_UPDATE_QUEUE(EVENT_DIRECT_EXCHANGE_NAME, BIZ_JOB_STATUS_UPDATE_QUEUE_NAME, BIZ_JOB_STATUS_UPDATE_QUEUE_NAME),
     STRUCTURE_UPLOAD_QUEUE(EVENT_DIRECT_EXCHANGE_NAME, STRUCTURE_UPLOAD_QUEUE_NAME, STRUCTURE_UPLOAD_QUEUE_NAME),
     STRUCTURE_UPLOAD_CALLBACK_QUEUE(EVENT_DIRECT_EXCHANGE_NAME, STRUCTURE_UPLOAD_CALLBACK_QUEUE_NAME, STRUCTURE_UPLOAD_CALLBACK_QUEUE_NAME),
-    STRUCTURE_IMPORT_QUEUE(EVENT_DIRECT_EXCHANGE_NAME, STRUCTURE_IMPORT_QUEUE_NAME, STRUCTURE_IMPORT_QUEUE_NAME);
+    STRUCTURE_IMPORT_QUEUE(EVENT_DIRECT_EXCHANGE_NAME, STRUCTURE_IMPORT_QUEUE_NAME, STRUCTURE_IMPORT_QUEUE_NAME),
+    STRUCTURE_IMPORT_CALLBACK_QUEUE(EVENT_DIRECT_EXCHANGE_NAME, STRUCTURE_IMPORT_CALLBACK_QUEUE_NAME, STRUCTURE_IMPORT_CALLBACK_QUEUE_NAME);
     /**
      * 交换名称
      */
@@ -27,7 +28,7 @@ public enum HtcpmdCenterMqEnum {
      */
     private String routeKey;
 
-    HtcpmdCenterMqEnum(String exchange, String name, String routeKey) {
+    HtcpmdEventMqEnum(String exchange, String name, String routeKey) {
         this.exchange = exchange;
         this.name = name;
         this.routeKey = routeKey;

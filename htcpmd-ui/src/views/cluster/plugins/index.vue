@@ -100,7 +100,7 @@ export default {
 	mounted() {
 		// TODO: Store locally to reduce requests.
 		this.$api.GetList(`/aiida_plugins/`).then(resp => {
-			if (resp.code == 0) {
+			if (resp.code == 200) {
 				this.plugins = resp.data;
 			}
 			this.loading_plugins = false;

@@ -20,5 +20,5 @@ public class HtcpmdCommonConstant {
     public static final String DEMO_CLIENT_ID = "demo";
 
     // 默认公共Group Id
-    public static final long PUBLIC_GROUP_ID = 1L;
+    public static final String PUBLIC_GROUP_ID = "1";
 }

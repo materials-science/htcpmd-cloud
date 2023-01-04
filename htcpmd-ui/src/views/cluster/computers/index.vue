@@ -507,7 +507,7 @@ export default {
 					data.mpirun_command = data.mpirun_command.split(" ");
 					data.user = util.cookies.get("uuid");
 					this.$api.AddObj(apiPrefix, data).then(resp => {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.$message.success("Upload Success!");
 						}
 						this.handleCurrentPageChange(this.currentPage);
@@ -538,7 +538,7 @@ export default {
 				.then(() => {
 					this.tableLoading = true;
 					this.$api.DelObj(apiPrefix, row.uuid).then(resp => {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.$message.success("Delete Success");
 							return this.handleCurrentPageChange(
 								this.currentPage

@@ -1,6 +1,7 @@
 package cn.poryoung.htcpmd.center.config;
 
-import cn.poryoung.htcpmd.center.constant.HtcpmdCenterMqEnum;
+import cn.poryoung.htcpmd.center.constant.HtcpmdDeadLetterMqEnum;
+import cn.poryoung.htcpmd.center.constant.HtcpmdEventMqEnum;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -24,11 +25,23 @@ public class RabbitMqConfig {
      */
     @Bean
     Declarables rabbitMqBindings() {
-        DirectExchange htcpmdEventDirect = (DirectExchange) ExchangeBuilder.directExchange(HtcpmdCenterMqEnum.EVENT_DEFAULT_QUEUE.getExchange()).durable(true).build();
+        DirectExchange htcpmdEventDirect = (DirectExchange) ExchangeBuilder.directExchange(HtcpmdEventMqEnum.EVENT_DEFAULT_QUEUE.getExchange()).durable(true).build();
         List<Declarable> declarables = new ArrayList<>();
-        declarables.add(htcpmdEventDirect);
-        Arrays.stream(HtcpmdCenterMqEnum.values()).collect(Collectors.toList()).forEach(o -> {
+
+        DirectExchange dlqDirect = (DirectExchange) ExchangeBuilder.directExchange(HtcpmdEventMqEnum.EVENT_DEFAULT_QUEUE.getExchange()).durable(true).build();
+        declarables.add(dlqDirect);
+        Arrays.stream(HtcpmdDeadLetterMqEnum.values()).collect(Collectors.toList()).forEach(o -> {
             Queue queue = new Queue(o.getName());
+            declarables.add(queue);
+            declarables.add(BindingBuilder.bind(queue).to(dlqDirect).with(o.getRouteKey()));
+        });
+
+        declarables.add(htcpmdEventDirect);
+        Arrays.stream(HtcpmdEventMqEnum.values()).collect(Collectors.toList()).forEach(o -> {
+            Queue queue = QueueBuilder.durable(o.getName())
+                    .withArgument("x-dead-letter-exchange", HtcpmdDeadLetterMqEnum.DLQ_DEFAULT_QUEUE.getExchange())
+                    .withArgument("x-dead-letter-routing-key", HtcpmdDeadLetterMqEnum.DLQ_DEFAULT_QUEUE.getRouteKey())
+                    .build();
             declarables.add(queue);
             declarables.add(BindingBuilder.bind(queue).to(htcpmdEventDirect).with(o.getRouteKey()));
         });

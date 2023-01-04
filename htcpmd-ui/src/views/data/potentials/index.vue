@@ -220,7 +220,7 @@ export default {
 				.then(() => {
 					this.tableLoading = true;
 					this.$api.DelObj(apiPrefix, row.uuid).then(resp => {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.$message.success("Delete Success");
 							return this.handleCurrentPageChange(
 								this.currentPage

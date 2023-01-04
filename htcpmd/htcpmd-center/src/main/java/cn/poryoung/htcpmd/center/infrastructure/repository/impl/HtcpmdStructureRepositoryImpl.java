@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * structure 信息 Repository实现
@@ -30,6 +29,17 @@ public class HtcpmdStructureRepositoryImpl implements HtcpmdStructureRepository 
     @Override
     public HtcpmdStructure selectHtcpmdStructureById(String id) {
         return htcpmdStructureMapper.selectHtcpmdStructureById(id);
+    }
+
+    /**
+     * 查询structure 信息
+     *
+     * @param uuid structure 信息主键
+     * @return structure 信息
+     */
+    @Override
+    public HtcpmdStructure selectHtcpmdStructureByUuid(String uuid) {
+        return htcpmdStructureMapper.selectHtcpmdStructureByUuid(uuid);
     }
 
     /**
@@ -56,7 +66,7 @@ public class HtcpmdStructureRepositoryImpl implements HtcpmdStructureRepository 
     }
 
     @Override
-    public int insertBatch(Set<HtcpmdStructure> htcpmdStructureList) {
+    public int insertBatch(List<HtcpmdStructure> htcpmdStructureList) {
         return htcpmdStructureMapper.insertBatch(htcpmdStructureList);
     }
 

@@ -15,6 +15,15 @@ export default {
 	},
 	component: layoutHeaderAside,
 	children: (pre => [
+    {
+        path: "bizjob",
+        name: `${pre}bizjob`,
+        component: _import("dashboard/bizjob"),
+        meta: {
+          ...meta,
+          title: "Biz Job"
+        }
+      },
 		{
 			path: "system-tasks",
 			name: `${pre}system-tasks`,

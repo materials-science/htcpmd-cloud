@@ -747,7 +747,7 @@ export default {
 				this.$message.error("UUID is None!");
 			}
 			this.$router.push({
-				path: `/structures/detail/${uuid}`
+				path: `/structure/detail/${uuid}`
 			});
 		},
 		async loadStructures() {
@@ -780,11 +780,11 @@ export default {
 			}
 			this.loading_structures = true;
 			this.$api
-				.GetObj("/structures/", this.new_structure_id)
+				.GetObj("/structure/", this.new_structure_id)
 				.then(resp => {
 					this.loading_structures = false;
 					try {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.structures.push(resp.data);
 							console.log(this.structures);
 							this.new_structure_id = "";
@@ -808,7 +808,7 @@ export default {
 			this.$api
 				.GetList("/computers/", { label: query, uuid: query })
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.computers_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -831,7 +831,7 @@ export default {
 					computer: this.computers_selected
 				})
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.codes_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -852,7 +852,7 @@ export default {
 					label: query
 				})
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.pw_calc_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -922,7 +922,7 @@ export default {
 		this.$api
 			.GetList(`/calctask_types/`, { category_name: "ph" })
 			.then(resp => {
-				if (resp.code == 0) {
+				if (resp.code == 200) {
 					let data = resp.data;
 					let calctasks_types = [];
 					data.forEach(item => {

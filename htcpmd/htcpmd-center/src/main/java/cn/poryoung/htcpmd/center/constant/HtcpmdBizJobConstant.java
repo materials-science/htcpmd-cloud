@@ -6,6 +6,9 @@ import lombok.Getter;
 public class HtcpmdBizJobConstant {
     public static final String REDIS_KEY = "biz_job";
 
+    /* redis cache expire time in second */
+    public static final long EXPIRE_TIME = 3600L;
+
     public static String getRedisObjectKey(String id) {
         return StrUtil.format("{}:{}", REDIS_KEY, id);
     }

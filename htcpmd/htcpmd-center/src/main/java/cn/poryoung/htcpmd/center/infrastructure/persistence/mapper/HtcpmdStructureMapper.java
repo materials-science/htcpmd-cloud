@@ -4,7 +4,6 @@ import cn.poryoung.htcpmd.center.domain.entity.HtcpmdStructure;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * structure 信息Mapper接口
@@ -20,6 +19,14 @@ public interface HtcpmdStructureMapper {
      * @return structure 信息
      */
     public HtcpmdStructure selectHtcpmdStructureById(String id);
+
+    /**
+     * 查询structure 信息
+     *
+     * @param uuid structure 信息主键
+     * @return structure 信息
+     */
+    public HtcpmdStructure selectHtcpmdStructureByUuid(String uuid);
 
     /**
      * 查询structure 信息列表
@@ -43,7 +50,7 @@ public interface HtcpmdStructureMapper {
      * @param htcpmdStructureList structure 信息List
      * @return 结果
      */
-    public int insertBatch(@Param("list") Set<HtcpmdStructure> htcpmdStructureList);
+    public int insertBatch(@Param("list") List<HtcpmdStructure> htcpmdStructureList);
 
     /**
      * 修改structure 信息

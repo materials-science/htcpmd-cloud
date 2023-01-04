@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * structure 信息 领域Service业务层实现
@@ -30,6 +29,17 @@ public class HtcpmdStructureDomainServiceImpl implements HtcpmdStructureDomainSe
     @Override
     public HtcpmdStructure selectHtcpmdStructureById(String id) {
         return htcpmdStructureRepository.selectHtcpmdStructureById(id);
+    }
+
+    /**
+     * 查询structure 信息
+     *
+     * @param uuid structure 信息主键
+     * @return structure 信息
+     */
+    @Override
+    public HtcpmdStructure selectHtcpmdStructureByUuid(String uuid) {
+        return htcpmdStructureRepository.selectHtcpmdStructureByUuid(uuid);
     }
 
     /**
@@ -56,7 +66,7 @@ public class HtcpmdStructureDomainServiceImpl implements HtcpmdStructureDomainSe
     }
 
     @Override
-    public int insertBatch(Set<HtcpmdStructure> htcpmdStructureList) {
+    public int insertBatch(List<HtcpmdStructure> htcpmdStructureList) {
         return htcpmdStructureRepository.insertBatch(htcpmdStructureList);
     }
 

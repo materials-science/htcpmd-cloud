@@ -247,7 +247,7 @@ export default {
 							password2: this.formSignup.password2
 						})
 						.then(resp => {
-							if (resp.code == 0) {
+							if (resp.code == 200) {
 								this.$message.success(
 									"Verification Email sent."
 								);

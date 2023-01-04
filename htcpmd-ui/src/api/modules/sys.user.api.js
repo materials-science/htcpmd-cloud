@@ -1,7 +1,7 @@
 import setting from "@/setting";
 import { find, assign } from "lodash";
 
-const htcpmd_system = setting.api.htcpmd_system;
+const htcpmd_center = setting.api.htcpmd_center;
 
 const users = [
   {
@@ -38,7 +38,7 @@ export default ({
    */
   SYS_LOGIN_USER_INFO() {
     return request({
-      url: `${htcpmd_system}/sso/profile`,
+      url: `${htcpmd_center}/sso/profile`,
       method: "get"
     });
   },

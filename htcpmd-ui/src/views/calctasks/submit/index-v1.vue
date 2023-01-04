@@ -117,7 +117,7 @@ export default {
 	mounted() {
 		// TODO: Store locally to reduce requests.
 		this.$api.GetList(`/calctask_categories/`).then(resp => {
-			if (resp.code == 0) {
+			if (resp.code == 200) {
 				this.calctask_categories = resp.data;
 				this.calctask_categories.forEach(element => {
 					this.activeCards.push(element.id);
@@ -126,7 +126,7 @@ export default {
 			this.load_calctask_categories = false;
 		});
 		this.$api.GetList(`/calctask_types/`).then(resp => {
-			if (resp.code == 0) {
+			if (resp.code == 200) {
 				this.calctasks_types = resp.data;
 			} else {
 				this.$message.error("No CalcTasks Types Avaliable.");

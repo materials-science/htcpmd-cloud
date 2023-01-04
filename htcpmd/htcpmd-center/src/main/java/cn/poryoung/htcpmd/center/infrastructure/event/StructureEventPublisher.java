@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.poryoung.htcpmd.center.constant.HtcpmdBizJobConstant;
-import cn.poryoung.htcpmd.center.constant.HtcpmdCenterMqEnum;
+import cn.poryoung.htcpmd.center.constant.HtcpmdEventMqEnum;
 import cn.poryoung.htcpmd.center.domain.entity.HtcpmdBizJob;
 import cn.poryoung.htcpmd.center.domain.service.HtcpmdBizJobDomainService;
 import cn.poryoung.htcpmd.common.constant.BusinessErrorStatusEnum;
@@ -33,28 +33,40 @@ public class StructureEventPublisher extends EventPublisher {
     private HtcpmdBizJobDomainService htcpmdBizJobDomainService;
 
     public void publishUploadStructureEvent(Map<String, Object> event) throws BusinessException, SystemException {
-        List<String> logArr = new ArrayList<>();
-        logArr.add("[INFO] Preparing to publish `event.htcpmd.structure.upload` event.");
-        // create a structure upload job
-        HtcpmdBizJob bizJob = new HtcpmdBizJob("Upload Structure Job", "event.htcpmd.structure.upload");
-        bizJob.setDescription("Upload structure files.");
-        bizJob.setStatus(HtcpmdBizJobConstant.StatusEnum.SUBMITTED.getStatus());
-        bizJob.setStatusMsg(HtcpmdBizJobConstant.StatusEnum.SUBMITTED.getStatus_msg());
-        bizJob.setGroupId(Long.valueOf(CustRequestHelper.getGroupId()));
+        publishImportStructureEvent(HtcpmdEventMqEnum.STRUCTURE_UPLOAD_QUEUE, event, "Upload Structure Job", "Upload structure files.");
+    }
 
-        htcpmdBizJobDomainService.insertHtcpmdBizJob(bizJob);
-        BusinessException.throwExceptionIfTrue(StrUtil.isBlank(bizJob.getId()), BusinessErrorStatusEnum.FAILED_TO_CREATE_A_BIZ_JOB, "创建BizJob失败");
+    public void publishImportStructureEvent(String type, Map<String, Object> event) throws BusinessException {
+        event.put("type", type);
+        publishImportStructureEvent(HtcpmdEventMqEnum.STRUCTURE_IMPORT_QUEUE, event, "Import Structure Job", "Import structure files.");
+    }
+
+    private void publishImportStructureEvent(HtcpmdEventMqEnum queue, Map<String, Object> event, String jobName, String jobDesc) throws BusinessException {
+        List<String> logArr = new ArrayList<>();
+        String jobType = StrUtil.format("event.{}", queue.getRouteKey());
+        logArr.add(StrUtil.format("[INFO] Preparing to publish `{}` event.", jobType));
+        // create a structure upload job
+        HtcpmdBizJob bizJob = newBizJob(jobName, jobType, jobDesc);
         logArr.add("[INFO] Submit to Task Queue.");
         redisService.hSetAll(HtcpmdBizJobConstant.getRedisObjectKey(bizJob.getId()), BeanUtil.beanToMap(bizJob));
         redisService.setCacheList(HtcpmdBizJobConstant.getRedisLogsKey(bizJob.getId()), logArr);
 
         event.put("bizJobId", bizJob.getId());
-        publishEvent(HtcpmdCenterMqEnum.STRUCTURE_UPLOAD_QUEUE.getExchange(), HtcpmdCenterMqEnum.STRUCTURE_UPLOAD_QUEUE.getRouteKey(), event);
+        publishEvent(queue.getExchange(), queue.getRouteKey(), event);
 
-        log.debug("Sent Message to Queue {}.", HtcpmdCenterMqEnum.STRUCTURE_UPLOAD_QUEUE.getName());
+        log.debug("Sent Message to Queue {}.", queue.getName());
     }
 
-    public void publishImportStructureEvent() {
+    private HtcpmdBizJob newBizJob(String name, String type, String desc) throws BusinessException {
+        HtcpmdBizJob bizJob = new HtcpmdBizJob(name, type);
+        bizJob.setDescription(desc);
+        bizJob.setStatus(HtcpmdBizJobConstant.StatusEnum.SUBMITTED.getStatus());
+        bizJob.setStatusMsg(HtcpmdBizJobConstant.StatusEnum.SUBMITTED.getStatus_msg());
+        bizJob.setGroupId(CustRequestHelper.getGroupId());
 
+        htcpmdBizJobDomainService.insertHtcpmdBizJob(bizJob);
+        BusinessException.throwExceptionIfTrue(StrUtil.isBlank(bizJob.getId()), BusinessErrorStatusEnum.FAILED_TO_CREATE_A_BIZ_JOB, "创建BizJob失败");
+
+        return bizJob;
     }
 }

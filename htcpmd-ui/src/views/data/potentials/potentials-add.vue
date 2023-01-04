@@ -208,7 +208,7 @@ export default {
 					);
 
 					this.$api.AddObj(apiPrefix, this.fileData).then(resp => {
-						if (resp.code == 0) {
+						if (resp.code == 200) {
 							this.$message.success("Upload Success!");
 							this.$emit("success");
 						}

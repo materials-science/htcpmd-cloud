@@ -1,26 +1,30 @@
-package cn.poryoung.htcpmd.center.domain.entity;
+package cn.poryoung.htcpmd.center.domain.entity.es;
 
 import cn.hutool.json.JSONArray;
+import cn.poryoung.htcpmd.common.pojo.BaseDo;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.io.Serializable;
 import java.util.List;
 
-@Document(indexName = "htcpmd_structure")
 @Data
-public class EsStructure implements Serializable {
+@Document(indexName = "htcpmd_structure")
+public class EsStructure extends BaseDo {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Field(type = FieldType.Keyword)
     private String id;
 
     @Field(type = FieldType.Keyword)
     private String uuid;
+
+    /**
+     * 群组ID
+     */
+    private String groupId;
 
     /**
      * structure 文件访问地址
@@ -33,14 +37,9 @@ public class EsStructure implements Serializable {
     private String coverImg;
 
     /**
-     * 群组ID
+     * 创建者
      */
-    private String groupId;
-
-    /**
-     * 版本号
-     */
-    private Long verNo;
+    private String createBy;
 
     @Field(type = FieldType.Keyword)
     private JSONArray elements;

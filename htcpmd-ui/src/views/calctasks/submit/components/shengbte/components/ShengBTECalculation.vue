@@ -1195,7 +1195,7 @@ export default {
 			this.$api
 				.AddObj("/utils/shengbte/files/control/", this.formData.control)
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.ControlFile = resp.data;
 						this.previewControlFileToggleFlag = true;
 					}

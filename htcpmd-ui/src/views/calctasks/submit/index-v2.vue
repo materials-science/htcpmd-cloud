@@ -98,7 +98,7 @@ export default {
 	mounted() {
 		// TODO: Store locally to reduce requests.
 		this.$api.GetList(`/calctask_categories/`).then(resp => {
-			if (resp.code == 0) {
+			if (resp.code == 200) {
 				this.calctask_categories = resp.data;
 				this.calctask_categories.forEach(element => {
 					this.activeCards.push(element.uuid);

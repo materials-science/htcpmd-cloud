@@ -351,7 +351,7 @@ export default {
 			this.$api
 				.GetObj(apiPrefix, this.uuid, "/node_info/", { id })
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						console.log(resp.data);
 						this.node_info = resp.data;
 						this.activated_tab = "Info";
@@ -373,7 +373,7 @@ export default {
 				this.$message.error("Structure UUID is None!");
 			}
 			this.$router.push({
-				path: `/structures/detail/${uuid}`
+				path: `/structure/detail/${uuid}`
 			});
 		},
 		newTagFormSubmit(formName) {
@@ -394,7 +394,7 @@ export default {
 							}
 						)
 						.then(resp => {
-							if (resp.code == 0) {
+							if (resp.code == 200) {
 								this.$message.success("Upload Success!");
 							}
 							this.calctask = resp.data;
@@ -419,7 +419,7 @@ export default {
 					}
 				)
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.$message.success("Remove Success!");
 					}
 					this.calctask = resp.data;
@@ -464,13 +464,13 @@ export default {
 	mounted() {
 		this.uuid = this.$route.params.uuid;
 		this.$api.GetObj(apiPrefix, this.uuid).then(resp => {
-			if (resp.code == 0) {
+			if (resp.code == 200) {
 				this.calctask = resp.data;
 				console.log(this.calctask);
 			}
 		});
 		this.$api.GetObj(apiPrefix, this.uuid, "/nodes_tree/").then(resp => {
-			if (resp.code == 0) {
+			if (resp.code == 200) {
 				this.nodes_tree = resp.data;
 				this.loading_nodes_tree = false;
 			} else {

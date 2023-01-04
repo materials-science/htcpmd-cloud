@@ -1058,7 +1058,7 @@ export default {
 					uuid: query
 				})
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.pseudo_family_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -1096,7 +1096,7 @@ export default {
 					computer: this.calctask.computer
 				})
 				.then(resp => {
-					if (resp.code == 0) {
+					if (resp.code == 200) {
 						this.codes_list = resp.data.results;
 					} else {
 						this.$message.error("Retrivied failed! Please retry.");
@@ -1280,7 +1280,7 @@ export default {
 		this.$api
 			.GetList(`/available_protocols/`, { type: "pw" })
 			.then(resp => {
-				if (resp.code == 0) {
+				if (resp.code == 200) {
 					let protocols_data = resp.data;
 					let protocols = [];
 					for (let key in protocols_data) {
