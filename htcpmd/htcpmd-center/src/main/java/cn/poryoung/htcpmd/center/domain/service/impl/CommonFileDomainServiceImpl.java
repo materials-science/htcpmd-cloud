@@ -1,14 +1,17 @@
 package cn.poryoung.htcpmd.center.domain.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.poryoung.htcpmd.center.domain.entity.CommonFile;
 import cn.poryoung.htcpmd.center.domain.repository.CommonFileRepository;
 import cn.poryoung.htcpmd.center.domain.service.CommonFileDomainService;
 import cn.poryoung.htcpmd.common.constant.BusinessErrorStatusEnum;
 import cn.poryoung.htcpmd.common.exception.BusinessException;
 import cn.poryoung.htcpmd.common.exception.SystemException;
+import cn.poryoung.htcpmd.common.util.CustRequestHelper;
 import cn.xuyanwu.spring.file.storage.FileInfo;
 import cn.xuyanwu.spring.file.storage.FileStorageService;
+import cn.xuyanwu.spring.file.storage.PathUtil;
 import com.ruoyi.common.core.utils.DateUtils;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +41,17 @@ public class CommonFileDomainServiceImpl implements CommonFileDomainService {
 
     @Override
     public List<FileInfo> upload(List<MultipartFile> fileList) throws BusinessException, SystemException {
+        return upload(fileList, "tmp/");
+    }
+
+    @Override
+    public List<FileInfo> upload(List<MultipartFile> fileList, String relPath) throws BusinessException, SystemException {
+        relPath = PathUtil.join(CustRequestHelper.getGroupId(), StrUtil.isBlank(relPath) ? "" : relPath);
         // upload files
         BusinessException.throwExceptionIfTrue(CollectionUtil.isEmpty(fileList), BusinessErrorStatusEnum.INVALID_REQUEST_PARAMETERS.getCode(), "上传文件为空！");
         List<FileInfo> fileInfoList = new ArrayList<>(fileList.size());
         for (var file : fileList) {
-            FileInfo fileInfo = fileStorageService.of(file).upload();
+            FileInfo fileInfo = fileStorageService.of(file).setPath(relPath).upload();
             if (Objects.isNull(fileInfo)) {
                 cleanTempFiles(fileInfoList);
                 throw new BusinessException(BusinessErrorStatusEnum.FILE_UPLOAD_ERROR);

@@ -75,7 +75,7 @@
 								class="data-table-expand--wrap"
 								disabled
 							>
-								<el-form-item label="label">
+								<el-form-item :label="$_t('label')">
 									<el-input
 										disabled
 										:value="calctask.label"
@@ -99,7 +99,7 @@
 										:value="calctask.calctask_type"
 									></el-input>
 								</el-form-item> -->
-								<el-form-item label="user">
+								<el-form-item :label="$_t('user')">
 									<el-input
 										disabled
 										:value="calctask.user.email"
@@ -247,7 +247,7 @@
 								</el-table-column>
 								<el-table-column
 									property="description"
-									label="description"
+									:label="$_t('description')"
 								></el-table-column>
 								<el-table-column align="right">
 									<template slot="header" slot-scope="scope">

@@ -1,6 +1,6 @@
 package cn.poryoung.htcpmd.center.domain.repository;
 
-import cn.poryoung.htcpmd.center.domain.entity.es.EsStructure;
+import cn.poryoung.htcpmd.center.domain.entity.structure.EsStructure;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 public interface EsStructureRepository extends ElasticsearchRepository<EsStructure, String> {

@@ -44,7 +44,7 @@
 								</el-form-item>
 								<el-form-item
 									prop="description"
-									label="description"
+									:label="$_t('description')"
 								>
 									<el-input
 										type="textarea"
@@ -83,7 +83,7 @@
 			</el-table-column>
 			<el-table-column prop="uuid" label="uuid" sortable align="center">
 			</el-table-column>
-			<el-table-column prop="label" label="label" align="center">
+			<el-table-column prop="label" :label="$_t('label')" align="center">
 			</el-table-column>
 			<el-table-column prop="type" label="type" align="center">
 			</el-table-column>
@@ -97,7 +97,7 @@
 					></el-button>
 				</template>
 			</el-table-column>
-			<el-table-column label="operations" align="center" min-width="150">
+			<el-table-column :label="$_t('operations')" align="center" min-width="150">
 				<template slot-scope="scope">
 					<el-button
 						size="mini"

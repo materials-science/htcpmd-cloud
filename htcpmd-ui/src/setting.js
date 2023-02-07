@@ -90,5 +90,10 @@ export default {
   // file storage
   file: {
     max: "200" // MB
+  },
+  // i18n
+  i18n: {
+    ignoreCase: true,
+    split: true
   }
 };

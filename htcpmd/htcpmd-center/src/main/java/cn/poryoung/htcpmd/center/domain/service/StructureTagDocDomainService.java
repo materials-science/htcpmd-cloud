@@ -1,6 +1,6 @@
 package cn.poryoung.htcpmd.center.domain.service;
 
-import cn.poryoung.htcpmd.center.domain.entity.mongo.StructureTagDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureTagDoc;
 import cn.poryoung.htcpmd.center.domain.repository.StructureTagDocRepository;
 import cn.poryoung.htcpmd.common.pojo.PageSupport;
 import cn.poryoung.htcpmd.common.util.CustRequestHelper;
@@ -37,7 +37,7 @@ public class StructureTagDocDomainService {
     }
 
     public Page<StructureTagDoc> searchByName(String name) {
-        return structureTagDocRepository.findAllByNameLikeIgnoreCaseAndGroupId(name, CustRequestHelper.getGroupId(), PageSupport.getPageable());
+        return structureTagDocRepository.findAllByNameLikeIgnoreCaseAndGroupId(name, CustRequestHelper.getGroupId(), PageSupport.getPageableBeginWith0());
     }
 
     public StructureTagDoc save(StructureTagDoc structureTagDoc) {

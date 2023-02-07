@@ -12,8 +12,8 @@ public enum BusinessErrorStatusEnum implements ErrorStatusEnum {
     FAILED_TO_CREATE_A_BIZ_JOB(ErrorStatusPrefixEnum.BUSINESS.addPrefix("5"), "创建业务任务失败"),
 
     STRUCTURE_NOT_FOUND(ErrorStatusPrefixEnum.BUSINESS.addPrefix("6"), "Failed to get the structure Info!"),
-
-    DUPLICATE_STRUCTURE_TAG(ErrorStatusPrefixEnum.BUSINESS.addPrefix("6"), "Structure tag name is duplicate."),
+    DUPLICATE_RECORD(ErrorStatusPrefixEnum.BUSINESS.addPrefix("7"), "Record is duplicate, please check your inputs."),
+    DUPLICATE_STRUCTURE_TAG(ErrorStatusPrefixEnum.BUSINESS.addPrefix("8"), "Structure tag name is duplicate."),
     ;
 
     private String code;

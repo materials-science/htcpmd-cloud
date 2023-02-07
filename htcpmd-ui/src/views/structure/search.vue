@@ -102,13 +102,13 @@
         <template slot-scope="props">
           <el-tag v-for="(tag, index) in props.row.tags && props.row.tags.slice(0, 2)" effect="plain" :key="index"
             @click.stop="showCurrentRowTags(props.$index, props.row)" class="d2-mr-10">{{
-    tag.name
-}}</el-tag>
+              tag.name
+            }}</el-tag>
           <el-button v-if="props.row.tags && props.row.tags.length > 2" size="small"
             @click.stop="showCurrentRowTags(props.$index, props.row)">...</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="operations" align="center" min-width="150">
+      <el-table-column :label="$_t('operations')" align="center" min-width="150">
         <template slot-scope="scope">
           <el-button size="mini" type="danger" plain
             @click.stop="handleDelete(scope.$index, scope.row)">delete</el-button>
@@ -116,8 +116,8 @@
       </el-table-column>
     </el-table>
     <template slot="footer">
-      <el-pagination background @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange"
-        :current-page="currentPage" :page-sizes="[2, 10, 20, 30, 40]" :page-size="pageSize"
+      <el-pagination background @size-change="searchData" @current-change="searchData"
+        :current-page="queryParams.pageNum" :page-sizes="[2, 10, 20, 30, 40]" :page-size="queryParams.pageSize"
         layout="total, sizes, prev, pager, next" :total="totalCount"></el-pagination>
     </template>
     <el-dialog title="Tags" :visible.sync="tags_dialog_visible" destroy-on-close>
@@ -130,7 +130,7 @@
             </el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column property="description" label="description"></el-table-column>
+        <el-table-column property="description" :label="$_t('description')"></el-table-column>
       </el-table>
     </el-dialog>
   </d2-container>
@@ -147,6 +147,11 @@ export default {
   },
   data() {
     return {
+      totalCount: 0,
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10
+      },
       tableData: [
         {
           uuid: "1325121640423690200",
@@ -174,9 +179,6 @@ export default {
         }
       ],
       tableLoading: true,
-      currentPage: 0,
-      totalCount: 0,
-      pageSize: 10,
       queryForm: {},
       multipleSelection: [],
       current_showed_tags: [],
@@ -185,17 +187,13 @@ export default {
     };
   },
   methods: {
-    pageRequest(
-      pageNum = this.currentPage,
-      pageSize = this.pageSize,
-      options = this.queryForm
-    ) {
-      return api.Search(Object.assign({ pageNum, pageSize }, options));
+    pageRequest() {
+      return api.Search(this.queryParams, this.queryForm);
     },
-    requestData() {
+    searchData() {
       if (
-        (!this.$route.query.elements && !this.$route.query.tags) ||
-        !this.$route.query.mode
+        (!this.queryForm.elements && !this.queryForm.tags) ||
+        !this.queryForm.mode
       ) {
         this.$message.warning(
           "No searching criteria. Ready to close this page!"
@@ -207,9 +205,7 @@ export default {
         }, 1000);
       }
       this.tableLoading = true;
-      this.queryForm = this.$route.query;
       this.pageRequest().then(data => {
-        console.log(data);
         this.tableData = data.rows;
         this.totalCount = data.total;
         this.tableLoading = false;
@@ -217,24 +213,6 @@ export default {
       this.$store.dispatch("d2admin/page/update", {
         tagName: this.$route.fullPath,
         title: `Search-${this.$route.query.elements || this.$route.query.tags}`
-      });
-    },
-    handleCurrentPageChange(pageNum) {
-      this.tableLoading = true;
-      this.pageRequest(pageNum).then(data => {
-        this.tableData = data.rows;
-        this.totalCount = data.total;
-        this.currentPage = pageNum;
-        this.tableLoading = false;
-      });
-    },
-    handlePageSizeChange(size) {
-      this.tableLoading = true;
-      this.pageSize = size;
-      this.pageRequest().then(data => {
-        this.tableData = data.rows;
-        this.totalCount = data.total;
-        this.tableLoading = false;
       });
     },
     handleSelectionChange(val) {
@@ -254,7 +232,7 @@ export default {
           api.DelObj(row.uuid).then(resp => {
             if (resp.code == 200) {
               this.$message.success("Delete Success");
-              return this.handleCurrentPageChange(this.currentPage);
+              return this.searchData();
             }
             this.tableLoading = false;
           });
@@ -308,12 +286,13 @@ export default {
     "$route.name"(name) {
       if (name == "structure-search" && this.$route.params.query_updated) {
         this.$route.params.query_updated = false;
-        this.requestData();
+        this.searchData();
       }
     }
   },
   mounted() {
-    this.requestData();
+    this.queryForm = this.$route.query;
+    this.searchData();
   }
 };
 </script>

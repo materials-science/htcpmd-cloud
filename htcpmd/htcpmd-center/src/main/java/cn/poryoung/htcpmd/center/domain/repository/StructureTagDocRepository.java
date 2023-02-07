@@ -1,6 +1,6 @@
 package cn.poryoung.htcpmd.center.domain.repository;
 
-import cn.poryoung.htcpmd.center.domain.entity.mongo.StructureTagDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureTagDoc;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;

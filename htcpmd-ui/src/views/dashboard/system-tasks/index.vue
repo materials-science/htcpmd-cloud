@@ -82,9 +82,9 @@
 			</el-table-column>
 			<el-table-column prop="uuid" label="uuid" align="center">
 			</el-table-column>
-			<el-table-column prop="label" label="label" sortable align="center">
+			<el-table-column prop="label" :label="$_t('label')" sortable align="center">
 			</el-table-column>
-			<el-table-column prop="user.username" label="user" align="center">
+			<el-table-column prop="user.username" :label="$_t('user')" align="center">
 			</el-table-column>
 			<el-table-column
 				prop="created_time"
@@ -124,7 +124,7 @@
 					<span>{{ props.row.status }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="operations" align="center" min-width="150">
+			<el-table-column :label="$_t('operations')" align="center" min-width="150">
 				<template slot-scope="scope">
 					<el-button
 						size="mini"

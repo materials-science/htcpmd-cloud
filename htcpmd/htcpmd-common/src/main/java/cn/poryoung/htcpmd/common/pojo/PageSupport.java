@@ -8,6 +8,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class PageSupport extends TableSupport {
+    public static Pageable getPageableBeginWith0() {
+        PageDomain pageDomain = getPageDomain();
+        return getPageableBeginWith0(pageDomain);
+    }
+
+    public static Pageable getPageableBeginWith0(PageDomain pageDomain) {
+        pageDomain.setPageNum(pageDomain.getPageNum() - 1);
+        return getPageable(pageDomain);
+    }
+
     public static Pageable getPageable() {
         PageDomain pageDomain = getPageDomain();
         return getPageable(pageDomain);

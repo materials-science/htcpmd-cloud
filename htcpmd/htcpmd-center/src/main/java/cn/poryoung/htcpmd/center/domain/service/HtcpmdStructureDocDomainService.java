@@ -1,6 +1,6 @@
 package cn.poryoung.htcpmd.center.domain.service;
 
-import cn.poryoung.htcpmd.center.domain.entity.mongo.HtcpmdStructureDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureDoc;
 import cn.poryoung.htcpmd.center.domain.repository.HtcpmdStructureDocRepository;
 import cn.poryoung.htcpmd.common.constant.BusinessErrorStatusEnum;
 import cn.poryoung.htcpmd.common.exception.BusinessException;
@@ -24,32 +24,32 @@ public class HtcpmdStructureDocDomainService {
     /**
      * 保存 structure 信息
      */
-    public HtcpmdStructureDoc save(HtcpmdStructureDoc structureAttr) throws Exception {
+    public StructureDoc save(StructureDoc structureAttr) throws Exception {
         return structureDocRepository.save(structureAttr);
     }
 
     /**
      * 批量保存 structure 信息
      */
-    public List<HtcpmdStructureDoc> saveAll(Iterable<HtcpmdStructureDoc> structureDocIterable) throws Exception {
+    public List<StructureDoc> saveAll(Iterable<StructureDoc> structureDocIterable) throws Exception {
         return structureDocRepository.saveAll(structureDocIterable);
     }
 
-    public HtcpmdStructureDoc findOneByUuidAndUpdate(HtcpmdStructureDoc structureDoc) throws BusinessException {
+    public StructureDoc findOneByUuidAndUpdate(StructureDoc structureDoc) throws BusinessException {
         BusinessException.throwExceptionIfTrue(!existsHtcpmdStructureDocByUuid(structureDoc.getUuid()), BusinessErrorStatusEnum.STRUCTURE_NOT_FOUND, null);
         return structureDocRepository.save(structureDoc);
 
     }
 
-    public HtcpmdStructureDoc findHtcpmdStructureDocByUuid(String uuid) {
+    public StructureDoc findHtcpmdStructureDocByUuid(String uuid) {
         return structureDocRepository.findHtcpmdStructureDocByUuidAndGroupId(uuid, CustRequestHelper.getGroupId());
     }
 
-    public HtcpmdStructureDoc findHtcpmdStructureDocById(String id) {
+    public StructureDoc findHtcpmdStructureDocById(String id) {
         return structureDocRepository.findHtcpmdStructureDocByUuidOrIdAndGroupId(id, id, CustRequestHelper.getGroupId());
     }
 
-    public HtcpmdStructureDoc deleteById(String id) {
+    public StructureDoc deleteById(String id) {
         return structureDocRepository.deleteByUuidOrIdAndGroupId(id, id, CustRequestHelper.getGroupId());
     }
 
@@ -57,13 +57,13 @@ public class HtcpmdStructureDocDomainService {
         return structureDocRepository.existsHtcpmdStructureDocByUuidAndGroupId(uuid, CustRequestHelper.getGroupId());
     }
 
-    public HtcpmdStructureDoc pushObjToRefs(String uuid, String key, Object obj) {
+    public StructureDoc pushObjToRefs(String uuid, String key, Object obj) {
 //        return mongoTemplate.update(HtcpmdStructureDoc.class)
 //                .matching(Criteria.where("uuid").is(uuid))
 //                .apply(new Update().push("phononList", o))
         return mongoTemplate.findAndModify(Query.query(Criteria.where("uuid").is(uuid)),
                 new Update().push(key, obj),
-                HtcpmdStructureDoc.class
+                StructureDoc.class
         );
     }
 }

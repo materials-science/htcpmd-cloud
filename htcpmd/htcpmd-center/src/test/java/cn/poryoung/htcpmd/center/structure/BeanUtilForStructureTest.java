@@ -5,15 +5,15 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.poryoung.htcpmd.center.domain.entity.es.EsStructure;
-import cn.poryoung.htcpmd.center.domain.entity.mongo.HtcpmdStructureDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.EsStructure;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureDoc;
 import org.junit.jupiter.api.Test;
 
 public class BeanUtilForStructureTest {
     @Test
     void testCopyPositionsFromJson() {
         String jsonStr = "{\"positions\":[[1,2,3],[4,5,6]]}";
-        HtcpmdStructureDoc entity = JSONUtil.toBean(jsonStr, HtcpmdStructureDoc.class);
+        StructureDoc entity = JSONUtil.toBean(jsonStr, StructureDoc.class);
         assert entity.getPositions().size() == 2;
         assert entity.getPositions().toString().equals("[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]");
     }
@@ -28,7 +28,7 @@ public class BeanUtilForStructureTest {
         bandList.add(band);
         jsonObject.set("bandList", bandList);
 
-        HtcpmdStructureDoc htcpmdStructureDoc = jsonObject.toBean(HtcpmdStructureDoc.class);
+        StructureDoc structureDoc = jsonObject.toBean(StructureDoc.class);
 
         assert true;
     }
@@ -44,8 +44,8 @@ public class BeanUtilForStructureTest {
         tags.add(tag);
         jsonObject.set("tags", tags);
 
-        HtcpmdStructureDoc htcpmdStructureDoc = jsonObject.toBean(HtcpmdStructureDoc.class);
-        EsStructure esStructure = BeanUtil.copyProperties(htcpmdStructureDoc, EsStructure.class);
+        StructureDoc structureDoc = jsonObject.toBean(StructureDoc.class);
+        EsStructure esStructure = BeanUtil.copyProperties(structureDoc, EsStructure.class);
 
         assert true;
     }

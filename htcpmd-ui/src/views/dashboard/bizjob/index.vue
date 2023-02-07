@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column prop="name" label="name" sortable align="center">
             </el-table-column>
-            <el-table-column prop="createBy" label="createBy" align="center">
+            <el-table-column prop="createBy" :label="$_t('createBy')" align="center">
             </el-table-column>
             <el-table-column prop="createTime" label="created time" sortable align="center">
                 <template slot-scope="props">
@@ -66,7 +66,7 @@
                     <span>{{ props.row.status }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="operations" align="center" min-width="150">
+            <el-table-column :label="$_t('operations')" align="center" min-width="150">
                 <template slot-scope="scope">
                     <el-button size="mini" type="danger" plain
                         @click="handleDelete(scope.$index, scope.row)">delete</el-button>

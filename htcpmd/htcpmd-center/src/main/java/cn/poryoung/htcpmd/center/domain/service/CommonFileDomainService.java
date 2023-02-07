@@ -22,6 +22,8 @@ public interface CommonFileDomainService {
      */
     public List<FileInfo> upload(List<MultipartFile> fileList) throws BusinessException, SystemException;
 
+    public List<FileInfo> upload(List<MultipartFile> fileList, String relPath) throws BusinessException, SystemException;
+
     /**
      * 查询文件信息
      *

@@ -439,13 +439,7 @@
                   </div>
                 </el-col>
                 <el-col :span="(DetailSpan * 2) / 3">
-                  <div class="content">
-                    <router-link to="/user">
-                      <el-link type="primary">
-                        UUID {{ diagrams.mobility.createBy }}
-                      </el-link>
-                    </router-link>
-                  </div>
+                  <user-link :uuid="diagrams.mobility.createBy"></user-link>
                 </el-col>
               </el-row>
             </el-row>
@@ -496,6 +490,8 @@ import { default as VChart, THEME_KEY } from "vue-echarts";
 import d2ContainerFrame from "@/components/d2-container-frame";
 // tags
 import structureTags from "./components/tags";
+// user link
+import userLink from "@/components/user-link";
 use([
   CanvasRenderer,
   LineChart,
@@ -515,7 +511,8 @@ export default {
     VChart,
     NumberTable,
     d2ContainerFrame,
-    structureTags
+    structureTags,
+    userLink
   },
   provide: {
     // [THEME_KEY]: "dark"

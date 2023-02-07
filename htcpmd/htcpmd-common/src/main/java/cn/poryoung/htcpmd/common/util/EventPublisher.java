@@ -70,10 +70,15 @@ public class EventPublisher {
     public void publishEvent(String exchange, String queue, Object event, Map<String, Object> extraHeaders) {
         Map<String, Object> pack = new HashMap<>();
         Map<String, Object> headers = getHeaders(extraHeaders);
-        pack.put("message_id", UUID.fastUUID());
-        pack.put("headers", headers);
+//        pack.put("message_id", UUID.fastUUID());
+//        pack.put("headers", headers);
         pack.put("data", event);
-        template.convertAndSend(exchange, queue, pack);
+//        template.convertAndSend(exchange, queue, pack);
+        template.convertAndSend(exchange, queue, pack, message -> {
+            message.getMessageProperties().getHeaders().putAll(headers);
+            message.getMessageProperties().setMessageId(UUID.fastUUID().toString());
+            return message;
+        });
         log.info("Sent Message to Queue {}.", queue);
     }
 }

@@ -1,17 +1,14 @@
 package cn.poryoung.htcpmd.center.domain.service;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.poryoung.htcpmd.center.application.dto.EsStructureSearchDto;
 import cn.poryoung.htcpmd.center.constant.HtcpmdStructureConstant;
-import cn.poryoung.htcpmd.center.domain.entity.es.EsStructure;
+import cn.poryoung.htcpmd.center.domain.entity.structure.EsStructure;
 import cn.poryoung.htcpmd.center.domain.repository.EsStructureRepository;
-import cn.poryoung.htcpmd.common.pojo.PageSupport;
 import cn.poryoung.htcpmd.common.util.CustRequestHelper;
-import com.ruoyi.common.core.web.page.PageDomain;
 import lombok.var;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -40,11 +37,10 @@ public class EsStructureDomainService {
     @Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    public Page<EsStructure> search(EsStructureSearchDto reqDto) {
+    public Page<EsStructure> search(EsStructureSearchDto reqDto, Pageable pageable) {
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
 
         // 分页
-        Pageable pageable = PageSupport.getPageable(BeanUtil.copyProperties(reqDto, PageDomain.class));
         nativeSearchQueryBuilder.withPageable(pageable);
 
         if (StrUtil.isNotBlank(reqDto.getGet_all()) && reqDto.getGet_all().equals(HtcpmdStructureConstant.getAllDebugCode)) {

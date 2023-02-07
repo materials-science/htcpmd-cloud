@@ -260,7 +260,7 @@
 					</el-table-column>
 					<el-table-column
 						prop="label"
-						label="label"
+						:label="$_t('label')"
 						sortable
 						align="center"
 					>

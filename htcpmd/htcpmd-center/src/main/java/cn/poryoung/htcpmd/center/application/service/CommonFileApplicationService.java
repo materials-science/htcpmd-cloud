@@ -40,8 +40,8 @@ public class CommonFileApplicationService extends BaseController {
      */
     @RequiresPermissions("htcpmd-common:common_file:upload")
     @PostMapping("/upload")
-    public AjaxResult upload(@RequestPart("file") List<MultipartFile> fileList) throws BusinessException, SystemException {
-        return AjaxResult.success(commonFileDomainService.upload(fileList));
+    public AjaxResult upload(@RequestPart("file") List<MultipartFile> fileList, @RequestPart("relPath") String relPath) throws BusinessException, SystemException {
+        return AjaxResult.success(commonFileDomainService.upload(fileList, relPath));
     }
 
     /**

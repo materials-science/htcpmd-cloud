@@ -58,8 +58,9 @@ spring:
         retry:
           enabled: true
           max-attempts: 3
-          initial-interval: 5000
-          max-interval: 50000
+          initial-interval: 1000
+          max-interval: 5000
+        default-requeue-rejected: false
   data:
     mongodb:
       database: htcpmd-cloud

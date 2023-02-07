@@ -15,23 +15,22 @@ import cn.poryoung.htcpmd.center.constant.HtcpmdBizJobConstant;
 import cn.poryoung.htcpmd.center.constant.HtcpmdCenterMqConstant;
 import cn.poryoung.htcpmd.center.constant.HtcpmdStructureConstant;
 import cn.poryoung.htcpmd.center.domain.entity.HtcpmdBizJob;
-import cn.poryoung.htcpmd.center.domain.entity.es.EsStructure;
-import cn.poryoung.htcpmd.center.domain.entity.mongo.HtcpmdStructureDoc;
-import cn.poryoung.htcpmd.center.domain.entity.mongo.StructureDiagramDoc;
-import cn.poryoung.htcpmd.center.domain.entity.mongo.StructureTagDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.EsStructure;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureDiagramDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureDoc;
+import cn.poryoung.htcpmd.center.domain.entity.structure.StructureTagDoc;
 import cn.poryoung.htcpmd.center.domain.repository.EsStructureRepository;
 import cn.poryoung.htcpmd.center.domain.repository.HtcpmdStructureDocRepository;
 import cn.poryoung.htcpmd.center.domain.repository.StructureDiagramDocRepository;
 import cn.poryoung.htcpmd.center.domain.repository.StructureTagDocRepository;
 import cn.poryoung.htcpmd.center.domain.service.HtcpmdBizJobDomainService;
-import cn.poryoung.htcpmd.center.domain.service.HtcpmdStructureDomainService;
-import cn.poryoung.htcpmd.center.domain.service.HtcpmdStructureTagDomainService;
-import cn.poryoung.htcpmd.center.domain.service.HtcpmdStructureTagRelDomainService;
 import cn.poryoung.htcpmd.common.util.CustRequestHelper;
 import cn.xuyanwu.spring.file.storage.FileStorageService;
 import com.ruoyi.common.core.constant.SecurityConstants;
+import com.ruoyi.common.core.context.SecurityContextHolder;
 import com.ruoyi.common.redis.service.RedisService;
 import lombok.var;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,15 +57,6 @@ public class HtcpmdStructureEventReceiver {
     private HtcpmdBizJobDomainService htcpmdBizJobDomainService;
 
     @Autowired
-    private HtcpmdStructureDomainService htcpmdStructureDomainService;
-
-    @Autowired
-    private HtcpmdStructureTagDomainService htcpmdStructureTagDomainService;
-
-    @Autowired
-    private HtcpmdStructureTagRelDomainService htcpmdStructureTagRelDomainService;
-
-    @Autowired
     private StructureTagDocRepository structureTagDocRepository;
 
     @Autowired
@@ -80,6 +70,8 @@ public class HtcpmdStructureEventReceiver {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+//    private final CountDownLatch listenLatch = new CountDownLatch(1);
 
     private void pushJobLog(String key, String text) {
         pushJobLog(key, text, "INFO");
@@ -97,9 +89,28 @@ public class HtcpmdStructureEventReceiver {
         );
     }
 
+    private void preHandler(JSONObject jsonObject) {
+        Map headers = jsonObject.getBean("headers", Map.class);
+        JSONObject dataObj = jsonObject.getJSONObject("data");
+        if (Objects.isNull(dataObj)) {
+            log.error("received Data is null.");
+            return;
+        }
+
+        final String bizJobId = dataObj.getStr("bizJobId");
+        if (StrUtil.isBlank(bizJobId)) {
+            log.error("received BizJobId is null, cannot update job status.");
+            return;
+        }
+    }
+
+    private void postHandler() {
+        SecurityContextHolder.remove();
+    }
+
     @RabbitListener(queues = {HtcpmdCenterMqConstant.STRUCTURE_UPLOAD_CALLBACK_QUEUE_NAME, HtcpmdCenterMqConstant.STRUCTURE_IMPORT_CALLBACK_QUEUE_NAME})
     @Transactional
-    public void jobStatusUpdate(JSONObject jsonObject) throws Exception {
+    public void jobStatusUpdate(JSONObject jsonObject, Message message) throws Exception {
         log.debug("received msg: {}", JSONUtil.toJsonStr(jsonObject));
         Map headers = jsonObject.getBean("headers", Map.class);
         JSONObject dataObj = jsonObject.getJSONObject("data");
@@ -145,13 +156,14 @@ public class HtcpmdStructureEventReceiver {
 
         JSONArray jsonArray = dataObj.getJSONArray("structureList");
         if (Objects.nonNull(jsonArray) && jsonArray.size() > 0) {
-            List<HtcpmdStructureDoc> structureList = new ArrayList<>(jsonArray.size());
+            List<StructureDoc> structureList = new ArrayList<>(jsonArray.size());
             List<EsStructure> esStructureList = new ArrayList<>(jsonArray.size());
             for (var o : jsonArray.toList(JSONObject.class)) {
-                String uuid = IdUtil.simpleUUID();
                 // get meta info
-                HtcpmdStructureDoc structure = o.toBean(HtcpmdStructureDoc.class);
-                structure.setUuid(uuid);
+                StructureDoc structure = o.toBean(StructureDoc.class);
+                if (StrUtil.isBlank(structure.getUuid())) {
+                    structure.setUuid(IdUtil.simpleUUID());
+                }
                 structure.setGroupId(groupId);
                 structure.setCreateBy(userId);
                 structure.setCreateTime(DateTime.now());

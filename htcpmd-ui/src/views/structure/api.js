@@ -68,11 +68,12 @@ export function Post(path, data, params = {}) {
  * search
  *
  */
-export function Search(query) {
+export function Search(params, data) {
   return request({
     url: apiPrefix + "search/",
     method: "post",
-    data: query
+    params: params,
+    data: data
   });
 }
 

@@ -18,15 +18,15 @@
     <el-dialog title="Tags" :visible.sync="tags_dialog_visible" destroy-on-close>
       <el-table :data="tags">
         <el-table-column property="name" label="name"></el-table-column>
-        <el-table-column property="description" label="description" width="200"></el-table-column>
-        <el-table-column label="createTime" width="200">
+        <el-table-column property="description" :label="$_t('description')" width="200"></el-table-column>
+        <el-table-column :label="$_t('createTime')" width="200">
           <template slot-scope="props">
             <el-date-picker v-model="props.row.createTime" type="datetime" placeholder="created time" readonly
               class="data-date-picker">
             </el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column label="createBy">
+        <el-table-column :label="$_t('createBy')">
           <template slot-scope="props">
             <router-link :to="`/user/${props.row.createBy}`">
               <el-link type="primary">UUID
@@ -58,15 +58,15 @@
       <el-dialog title="Add Tag" :visible.sync="tags_search_dialog_visible" append-to-body v-loading="loading">
         <el-table :data="searchTagList">
           <el-table-column property="name" label="name"></el-table-column>
-          <el-table-column property="description" label="description" width="200"></el-table-column>
-          <el-table-column label="createTime" width="200">
+          <el-table-column property="description" :label="$_t('description')" width="200"></el-table-column>
+          <el-table-column :label="$_t('createTime')" width="200">
             <template slot-scope="props">
               <el-date-picker v-model="props.row.createTime" type="datetime" placeholder="created time" readonly
                 class="data-date-picker">
               </el-date-picker>
             </template>
           </el-table-column>
-          <el-table-column label="createBy">
+          <el-table-column :label="$_t('createBy')">
             <template slot-scope="props">
               <router-link :to="`/user/${props.row.createBy}`">
                 <el-link type="primary">UUID
@@ -142,7 +142,7 @@ export default {
       searchTagList: [],
       totalTags: 0,
       queryParams: {
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 10,
         name: null
       }

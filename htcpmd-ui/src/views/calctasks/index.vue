@@ -93,7 +93,7 @@
 					</el-tabs>
 				</template>
 			</el-table-column>
-			<el-table-column prop="label" label="label" sortable align="center">
+			<el-table-column prop="label" :label="$_t('label')" sortable align="center">
 			</el-table-column>
 			<!-- TODO: Filter -->
 			<el-table-column
@@ -139,7 +139,7 @@
 				align="center"
 			>
 			</el-table-column>
-			<el-table-column prop="user.username" label="user" align="center">
+			<el-table-column prop="user.username" :label="$_t('user')" align="center">
 			</el-table-column>
 			<el-table-column
 				prop="status"

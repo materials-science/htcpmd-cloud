@@ -35,7 +35,7 @@
 			></el-table-column>
 			<el-table-column prop="name" label="name" align="center">
 			</el-table-column>
-			<el-table-column prop="user.email" label="user" align="center">
+			<el-table-column prop="user.email" :label="$_t('user')" align="center">
 			</el-table-column>
 			<el-table-column label="created time">
 				<template slot-scope="props">

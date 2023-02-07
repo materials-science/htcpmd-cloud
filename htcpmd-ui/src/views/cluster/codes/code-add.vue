@@ -14,14 +14,14 @@
 				<el-input v-model="form.computer" autocomplete="off"></el-input>
 			</el-form-item>
 			<el-form-item
-				label="label"
+				:label="$_t('label')"
 				prop="label"
 				:label-width="formLabelWidth"
 			>
 				<el-input v-model="form.label" autocomplete="off"></el-input>
 			</el-form-item>
 			<el-form-item
-				label="description"
+				:label="$_t('description')"
 				prop="description"
 				:label-width="formLabelWidth"
 			>
